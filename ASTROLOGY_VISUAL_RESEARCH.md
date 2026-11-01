@@ -1,6 +1,6 @@
-# Astrology visual direction — 27 October 2026
+# Astrology visual direction — 31 October 2026
 
-The client rejected the first set of generic floating objects and repeated service icons. This revision preserves the existing home-page Jyotisha animation and replaces the other backgrounds with readable, subject-specific astrological diagrams. Motion belongs to a chart pointer, transit indicator or lunar orbit; the whole diagram does not tumble. Non-home backgrounds are contained within their page header.
+The homepage keeps its existing Jyotisha scene and fallback. Every inner page now has a fixed, viewport-filling background that remains visible throughout scrolling. Raised brass geometry, navy surfaces, sparse star points and slow motion connect the scenes to Indian astrology. Detail pages have their own compositions rather than small rotations of section artwork.
 
 ## Research and scope
 
@@ -14,20 +14,28 @@ These are original symbolic artworks. No diagram represents a visitor's birth ch
 
 ## Backgrounds
 
-| Page | Visual and its connection to the page | Motion |
-| --- | --- | --- |
-| Home | Existing Jyotisha background | Preserved |
-| About | North Indian square-and-diamond kundli, twelve houses, Sun and Moon | Very slight viewing-angle movement; chart remains legible |
-| Services | Twelve-house zodiac chart with aspect connections | Transit indicator travels around the graduated dial |
-| How it works | Zodiac intersecting an east–west horizon; highlighted ascendant | Chart indicator demonstrates the relationship of chart, time and place |
-| Reviews | Two charts and their connections, inspired by synastry | Restrained movement; represents conversations and individual perspectives |
-| Contact | Celestial horizon instrument with cardinal directions | Slight viewing-angle movement; location and orientation |
-| Booking | Graduated zodiac sundial with triangular gnomon | Time indicator moves slowly; choosing a moment |
-| Horoscope | Eight shaded lunar phases around Chandra | The central Moon cycles through illumination while eight reference phases stay fixed |
-| Journal | Open celestial folio with a chart and lunar illustration | Restrained movement; studying and reflecting on a tradition |
-| FAQ | Inclined lunar path intersecting the ecliptic at Rahu and Ketu | Moon moves on the inclined path, nodes remain opposite |
-| Privacy | A personal kundli held in an engraved folio | Restrained movement; keeping personal chart information in confidence |
-| Terms | Zodiac and Libra-inspired star connections | Restrained movement; balance and agreement as an editorial metaphor |
+| Page | Visual and movement |
+| --- | --- |
+| Home | Existing Jyotisha scene, preserved |
+| About | Layered North Indian kundli, illuminated house markers and a nakshatra band |
+| Services | Navagraha-inspired arrangement: Sun, six orbiting luminaries and two symbolic opposed lunar nodes |
+| How it works | Kundli plates gently separating and assembling around a highlighted lagna |
+| Reviews | Three kundli panels, pulsing connections and an orbiting light |
+| Contact | Brass horizon instrument with intersecting planes and a moving marker |
+| Booking | Inclined zodiac sundial with a raised triangular gnomon and time indicator |
+| Horoscope | Eight shaded lunar phases, changing central Chandra and 27-part nakshatra band |
+| Journal | Raised manuscript leaves, kundli engraving and lotus illustration |
+| FAQ | Inclined lunar path meeting the ecliptic at two symbolic nodes |
+| Privacy | Personal kundli within layered brass folio frames and a lotus seal |
+| Terms | Ordered kundli divisions, steady central axis and rotating outer band |
+
+Service detail scenes use paired or grouped kundlis for relationships, nested chart instruments for readings, interlocking yantra-inspired triangles for spiritual services, Surya and radial brass rays for career, and Chandra with lotus geometry for wellbeing. The edition within each subject changes the geometry: chart count, petal count, triangle layers, rays, nested rings and illuminated markers. Each route also has a stable star arrangement and movement rate.
+
+The three journal articles use layered chart preparation, a larger Chandra with a tilted orbit, and a slowly breathing sixteen-petal lotus respectively. `src/lib/page-themes.ts` maps all 38 inner routes to scene configurations and unique fallback images.
+
+The full-page renderer uses one canvas, capped device pixel ratio, small star counts and transparent overlays. Text-heavy surfaces remain shaded. User pause, reduced motion, hidden tabs, data-saving hints, low-memory hints and unavailable or lost WebGL use the matching static composition. All generated geometry, materials and textures are disposed when a scene is removed.
+
+Generate fallback assets with a local server running using `npx tsx scripts/create-page-art.ts`. `PLAYWRIGHT_CHANNEL=chrome` selects an installed Chrome. For split Windows/WSL tooling, `PAGE_ART_RAW_DIR` captures transparent PNGs for subsequent WebP conversion on the platform with Sharp installed. Home assets are excluded from generation.
 
 ## Individual service photographs
 

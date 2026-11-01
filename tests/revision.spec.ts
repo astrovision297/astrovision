@@ -109,14 +109,15 @@ test('each service has its own photograph, shared with its detail page', async (
  await expect.poll(() => page.locator('.service-detail-image img').evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
 });
 
-test('non-home astrology artwork stays within the page header', async ({ page }) => {
- await page.goto('/how-it-works');
- await expect.poll(async () => {
-  const hero = await page.locator('.page-hero').boundingBox();
-  const art = await page.locator('.shared-cosmos').boundingBox();
-  return !!hero && !!art && Math.abs(hero.y - art.y) < 2 && Math.abs(hero.height - art.height) < 2;
- }).toBe(true);
- await page.locator('.expectations').scrollIntoViewIfNeeded();
- const art = await page.locator('.shared-cosmos').boundingBox();
- expect(art && art.y + art.height).toBeLessThan(180);
+test('inner-page astrology background remains behind the whole page while scrolling', async ({ page }) => {
+ for (const route of ['/how-it-works', '/services', '/blog/understanding-your-moon-sign']) {
+  await page.goto(route);
+  for (const fraction of [0, .5, 1]) {
+   await page.evaluate(value => window.scrollTo(0, (document.documentElement.scrollHeight - innerHeight) * value), fraction);
+   const art = await page.locator('.shared-cosmos').boundingBox();
+   expect(art?.y).toBeCloseTo(0, 0);
+   expect(art?.height).toBeCloseTo(page.viewportSize()!.height, 0);
+   await expect(page.locator('.cosmos-poster img')).toBeVisible();
+  }
+ }
 });

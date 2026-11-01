@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
-import { pageArt } from '@/lib/page-themes';
+import { pageScene } from '@/lib/page-themes';
 import { useLanguage } from './language-provider';
 import Image from 'next/image';
 import { Component, useCallback, useEffect, useId, useState, type ReactNode } from 'react';
@@ -20,15 +20,16 @@ export function ZodiacWheel({ small = false }: { small?: boolean }) {
 // Mounted once in the root layout so route changes preserve the background and pause choice.
 export default function Celestial() {
  const pathname=usePathname();
- const theme=pageArt(pathname);
- const [heroBounds,setHeroBounds]=useState<{top:number;height:number}|null>(null);
+ const config=pageScene(pathname);
+ const {theme,seed:variant}=config;
+ const sceneKey=config.id;
  const { t }=useLanguage();
  const [paused,setPaused]=useState(false);
  const [systemPaused,setSystemPaused]=useState(true);
  const [supported,setSupported]=useState(false);
- const [ready,setReady]=useState(false);
- const onReady=useCallback(()=>setReady(true),[]);
- const onError=useCallback(()=>{setReady(false);setSupported(false);},[]);
+ const [ready,setReady]=useState<string|null>(null);
+ const onReady=useCallback(()=>setReady(sceneKey),[sceneKey]);
+ const onError=useCallback(()=>{setReady(null);setSupported(false);},[]);
  useEffect(()=>{
   const nav=navigator as Navigator & {connection?:{saveData?:boolean};deviceMemory?:number};
   let available=false;
@@ -49,20 +50,12 @@ export default function Celestial() {
   update();media.addEventListener('change',update);document.addEventListener('visibilitychange',update);
   return()=>{media.removeEventListener('change',update);document.removeEventListener('visibilitychange',update);};
  },[paused]);
- useEffect(()=>{
-  if(theme==='home'){setHeroBounds(null);return;}
-  const hero=document.querySelector('.page-hero');
-  if(!hero){setHeroBounds(null);return;}
-  const measure=()=>{const bounds=hero.getBoundingClientRect();setHeroBounds({top:bounds.top+window.scrollY,height:bounds.height});};
-  measure();const observer=new ResizeObserver(measure);observer.observe(hero);window.addEventListener('resize',measure);
-  return()=>{observer.disconnect();window.removeEventListener('resize',measure);};
- },[pathname,theme]);
  const active=supported&&!paused&&!systemPaused;
- useEffect(()=>{setReady(false);},[active,theme]);
- return <><div className="shared-cosmos" style={theme==='home'?undefined:{position:'absolute',top:heroBounds?.top??124,height:heroBounds?.height??480,bottom:'auto'}} aria-hidden="true" data-theme={theme} data-active={active} data-live={active&&ready}>
+ useEffect(()=>{if(!active)setReady(null);},[active]);
+ return <><div className="shared-cosmos" aria-hidden="true" data-theme={theme} data-scene={sceneKey} data-variant={variant} data-active={active} data-live={active&&ready===sceneKey}>
   <div className="star-field"/>
-  <div className="cosmos-poster"><Image src={theme==='home'?'/images/jyotisha-poster.svg':`/images/scenes/${theme}-astrology.webp`} alt="" fill sizes="(max-width: 760px) 180vw, 110vw" className="jyotisha-poster" unoptimized={theme!=='home'}/></div>
-  {active&&<Boundary key={theme} onError={onError}>{theme==='home'?<LivingScene onReady={onReady}/>:<div className="living-scene"><PageScene theme={theme} onReady={onReady}/></div>}</Boundary>}
+  <div className="cosmos-poster"><Image src={config.poster} alt="" fill sizes="(max-width: 760px) 180vw, 110vw" className="jyotisha-poster" unoptimized={theme!=='home'}/></div>
+  {active&&<Boundary key={sceneKey} onError={onError}>{theme==='home'?<LivingScene onReady={onReady}/>:<div className="living-scene"><PageScene config={config} onReady={onReady} onError={onError}/></div>}</Boundary>}
   <div className="cosmos-shade"/>
  </div><button className="motion-toggle" type="button" aria-pressed={paused} onClick={()=>setPaused(value=>!value)}>
   <span aria-hidden="true">{paused?'▶':'Ⅱ'}</span>{t(paused?'Resume animation':'Pause animation')}
