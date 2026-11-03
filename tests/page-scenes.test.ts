@@ -6,12 +6,15 @@ import { createPageArt, animatePageArt, disposePageArt } from '../src/lib/page-a
 import { services } from '../src/data/content';
 import * as THREE from 'three';
 
-test('every supported inner page has a unique scene and an existing fallback', () => {
-  const configs = sceneRoutes.map(pageScene);
-  assert.equal(configs.length, 38);
+test('every supported page has a unique scene and an existing fallback', () => {
+  const configs = ['/', ...sceneRoutes].map(pageScene);
+  assert.equal(configs.length, 39);
   assert.equal(new Set(configs.map(config => config.id)).size, configs.length);
   assert.equal(new Set(configs.map(config => config.poster)).size, configs.length);
-  for (const config of configs) assert.ok(existsSync(`public${config.poster}`), config.poster);
+  for (const config of configs) {
+    assert.ok(existsSync(`public${config.poster}`), config.poster);
+    if (config.theme !== 'home') assert.ok(existsSync(`public${config.poster.replace('.webp', '-mobile.webp')}`), `${config.id} portrait fallback`);
+  }
   assert.equal(pageScene('/').poster, '/images/jyotisha-poster.svg');
 });
 
@@ -33,7 +36,7 @@ test('service geometry differs by subject and by service within each subject', (
 });
 
 test('all scenes animate safely and release their geometry on disposal', () => {
-  for (const route of sceneRoutes) {
+  for (const route of ['/', ...sceneRoutes]) {
     const config = pageScene(route);
     const model = createPageArt(config.theme, config);
     let disposed = 0;
@@ -50,5 +53,47 @@ test('all scenes animate safely and release their geometry on disposal', () => {
     }
     disposePageArt(model);
     assert.ok(disposed > 0, route);
+  }
+});
+
+
+test('reference compositions use distinct dimensional artwork', () => {
+  for (const [route, name] of [
+    ['/', 'Enamel-zodiac-wheel'],
+    ['/about', 'South-Indian-twelve-house-chart'],
+    ['/faq', 'Meditation-constellation'],
+    ['/services', 'Navagraha'],
+  ]) {
+    const config = pageScene(route);
+    const model = createPageArt(config.theme, config);
+    assert.ok(model.getObjectByName(name), `${route}: missing ${name}`);
+    disposePageArt(model);
+  }
+});
+
+test('every page has a different focal sculpture, including article pages', () => {
+  const seen = new Map<string, string>();
+  for (const route of ['/', ...sceneRoutes]) {
+    const config = pageScene(route);
+    const model = createPageArt(config.theme, config);
+    const shapes: string[] = [];
+    model.children[0].traverse(object => {
+      if (object instanceof THREE.Mesh) shapes.push(JSON.stringify((object.geometry as THREE.BufferGeometry & { parameters?: unknown }).parameters));
+    });
+    const signature = shapes.sort().join('|');
+    assert.ok(!seen.has(signature), `${route} repeats ${seen.get(signature)}`);
+    seen.set(signature, route);
+    disposePageArt(model);
+  }
+});
+
+test('inner-page artwork contains one focal composition and stars without detached decorations', () => {
+  for (const route of sceneRoutes) {
+    const config = pageScene(route);
+    const model = createPageArt(config.theme, config);
+    assert.equal(model.children.length, 2, route);
+    assert.match(model.children[0].name, /^Motif-/);
+    assert.ok(model.children[1] instanceof THREE.Points, route);
+    disposePageArt(model);
   }
 });

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { type ArtTheme, type SceneMotif } from './page-themes';
 export { artThemes, type ArtTheme } from './page-themes';
 
@@ -36,10 +37,32 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
   function stroke(parent: THREE.Group, coords: number[][], material: THREE.Material = brass, width = .012, closed = false, smooth = false) {
     const points = coords.map(([x, y, z = .06]) => new THREE.Vector3(x, y, z));
     if (closed) points.push(points[0].clone());
-    const curve = smooth ? new THREE.CatmullRomCurve3(points, false, 'catmullrom', .3) : new THREE.CurvePath<THREE.Vector3>();
-    if (curve instanceof THREE.CurvePath) for (let i = 1; i < points.length; i++) curve.add(new THREE.LineCurve3(points[i - 1], points[i]));
-    return mesh(parent, new THREE.TubeGeometry(curve, Math.max(8, points.length * 5), width, 5, false), material);
+    if (smooth) {
+      const curve = new THREE.CatmullRomCurve3(points, false, 'catmullrom', .3);
+      return mesh(parent, new THREE.TubeGeometry(curve, Math.max(48, points.length * 12), width, 8, false), material);
+    }
+    // Build each straight edge explicitly. Sampling a whole CurvePath cuts
+    // across corners and leaves the engraved chart borders visibly uneven.
+    const pieces: THREE.BufferGeometry[] = [];
+    const up = new THREE.Vector3(0, 1, 0);
+    for (let i = 1; i < points.length; i++) {
+      const direction = points[i].clone().sub(points[i - 1]);
+      if (direction.lengthSq() === 0) continue;
+      const geometry = new THREE.CylinderGeometry(width, width, direction.length(), 8, 1);
+      const rotation = new THREE.Quaternion().setFromUnitVectors(up, direction.normalize());
+      geometry.applyMatrix4(new THREE.Matrix4().compose(points[i].clone().add(points[i - 1]).multiplyScalar(.5), rotation, new THREE.Vector3(1, 1, 1)));
+      pieces.push(geometry);
+    }
+    if (points.length > 2) {
+      for (const point of points.slice(0, closed ? -1 : undefined)) {
+        pieces.push(new THREE.SphereGeometry(width, 8, 6).translate(point.x, point.y, point.z));
+      }
+    }
+    const geometry = mergeGeometries(pieces);
+    pieces.forEach(piece => piece.dispose());
+    return mesh(parent, geometry, material);
   }
+
   function segment(parent: THREE.Group, a: number[], b: number[], material: THREE.Material = brass, width = .012) {
     return stroke(parent, [a, b], material, width);
   }
@@ -142,7 +165,7 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
   }
 
   // Every scene uses real depth: raised brass lines, separate engraved plates,
-  // suspended rings and lights. Quiet edge motifs extend beyond the focal piece.
+  // suspended rings and lights, with one coherent focal composition per page.
   function turning(parent: THREE.Group, speed = .035) {
     const group = new THREE.Group(); parent.add(group);
     group.userData.motion = 'rotate'; group.userData.speed = speed;
@@ -156,6 +179,76 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
     }
     ring(flower, .32, .025, .12); dot(flower, 0, 0, .09);
     return flower;
+  }
+  // Original raised, enamelled geometry inspired by the supplied references.
+  function enamelWheel(parent: THREE.Group, radius = 2.65) {
+    const wheel = dial(parent, radius, false); wheel.name = 'Enamel-zodiac-wheel';
+    const palette = ['#b98372', '#bba56c', '#72aaa2', '#668eaf', '#9980ad', '#bc859b'];
+    for (let i = 0; i < 12; i++) {
+      const tile = mesh(wheel, new THREE.RingGeometry(radius - .48, radius - .04, 12, 1, i * Math.PI / 6, Math.PI / 6 - .016),
+        new THREE.MeshStandardMaterial({ color: palette[(i + edition) % palette.length], metalness: .3, roughness: .4, side: THREE.DoubleSide }), [0, 0, -.015]);
+      tile.name = `Enamel-sign-${i + 1}`;
+    }
+    const outer = turning(parent, -.018); nakshatra(outer, radius + .24);
+    pointer(wheel, radius - .62, .028);
+    return wheel;
+  }
+  function southChart(parent: THREE.Group, size = 2.1) {
+    const chart = new THREE.Group(); chart.name = 'South-Indian-twelve-house-chart'; parent.add(chart);
+    mesh(chart, new THREE.BoxGeometry(size * 2 + .12, size * 2 + .12, .12), ink, [0, 0, -.12]);
+    stroke(chart, [[-size, size], [size, size], [size, -size], [-size, -size]], brass, .028, true);
+    const cell = size / 2;
+    for (let i = 1; i < 4; i++) {
+      const offset = -size + i * cell;
+      segment(chart, [offset, size], [offset, size - cell]);
+      segment(chart, [offset, -size], [offset, -size + cell]);
+      segment(chart, [-size, offset], [-size + cell, offset]);
+      segment(chart, [size, offset], [size - cell, offset]);
+    }
+    stroke(chart, [[-cell, cell], [cell, cell], [cell, -cell], [-cell, -cell]], brass, .015, true);
+    const names = ['PISCES', 'ARIES', 'TAURUS', 'GEMINI', 'CANCER', 'LEO', 'VIRGO', 'LIBRA', 'SCORPIO', 'SAGITTARIUS', 'CAPRICORN', 'AQUARIUS'];
+    const cells = [[-1.5,1.5],[-.5,1.5],[.5,1.5],[1.5,1.5],[1.5,.5],[1.5,-.5],[1.5,-1.5],[.5,-1.5],[-.5,-1.5],[-1.5,-1.5],[-1.5,-.5],[-1.5,.5]];
+    cells.forEach(([x,y], i) => { label(chart, names[i], x * cell, y * cell + .17, .085); label(chart, String(i + 1), x * cell, y * cell - .12, .14, '#87b5cb'); });
+    sun(chart, .24); return chart;
+  }
+  function enamelLotus(parent: THREE.Group, count = 12) {
+    const flower = new THREE.Group(); flower.name = 'Sculpted-lotus-mandala'; parent.add(flower);
+    for (let layer = 0; layer < 3; layer++) {
+      const band = turning(flower, (layer % 2 ? -1 : 1) * .014); band.position.z = layer * .15;
+      for (let i = 0; i < count; i++) {
+        const petal = new THREE.Shape(); petal.moveTo(0, .22);
+        const length = 2.35 - layer * .47, width = .47 - layer * .08;
+        petal.bezierCurveTo(-width, .9, -width, length * .78, 0, length);
+        petal.bezierCurveTo(width, length * .78, width, .9, 0, .22);
+        const material = new THREE.MeshStandardMaterial({ color: ['#b88443', '#d4a35c', '#d59d80'][layer], metalness: .48, roughness: .36 });
+        const leaf = mesh(band, new THREE.ExtrudeGeometry(petal, { depth: .065, bevelEnabled: true, bevelThickness: .025, bevelSize: .025, bevelSegments: 2, steps: 1, curveSegments: 12 }), material);
+        leaf.rotation.z = (i + layer * .5) * Math.PI * 2 / count;
+      }
+    }
+    sun(flower, .25); return flower;
+  }
+  function meditation(parent: THREE.Group) {
+    const figure = new THREE.Group(); figure.name = 'Meditation-constellation'; parent.add(figure);
+    const line = (points: number[][], width = .018) => stroke(figure, points, pale, width, false, true);
+    // A seated figure drawn as a dimensional brass constellation.
+    line([[-.34,1.23],[-.4,1.65],[-.25,1.98],[0,2.08],[.25,1.98],[.4,1.65],[.34,1.23]]);
+    line([[-.34,1.55],[-.28,1.25],[0,1.1],[.28,1.25],[.34,1.55]], .012);
+    line([[-.24,1.55],[-.15,1.52],[-.07,1.55]], .009);
+    line([[.07,1.55],[.15,1.52],[.24,1.55]], .009);
+    line([[0,1.53],[-.04,1.38],[.04,1.36]], .008);
+    line([[-.1,1.26],[0,1.24],[.1,1.26]], .009);
+    for (const side of [-1, 1]) {
+      const mirror = (points: number[][]) => points.map(([x,y]) => [x * side,y,.16]);
+      line(mirror([[.3,1.3],[.64,1.05],[.77,.45],[1.22,-.12],[1.75,-.35],[1.9,-.2]]));
+      line(mirror([[.26,1.14],[.4,.4],[.57,-.16],[1.45,-.63],[1.62,-1.05],[.95,-1.26],[0,-1.08]]));
+      line(mirror([[.56,-.17],[1.12,-.34],[1.82,-.76],[1.78,-1.02],[.92,-1.12],[0,-.69]]));
+      line(mirror([[.23,1.99],[.57,1.68],[.49,1.1],[.7,.7]]), .01);
+      for (let i = 0; i < 4; i++) line(mirror([[.3 + i * .07,1.9],[.43 + i * .07,1.52],[.35 + i * .07,1.15]]), .006);
+    }
+    for (let i = 0; i < 7; i++) { const chakra = dot(figure, 0, 1.48 - i * .3, .045, i % 2 ? rose : blue, .24); pulse(chakra, i, .3); }
+    const halo = enamelWheel(parent, 2.6); halo.position.z = -.5;
+    figure.position.z = .3; figure.userData.float = true;
+    return figure;
   }
   function nakshatra(parent: THREE.Group, radius = 2.9) {
     const band = turning(parent, -.012); band.name = 'Twenty-seven-nakshatra-divisions';
@@ -188,9 +281,14 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
   }
   const focus = new THREE.Group(); focus.name = `Motif-${motif}-${edition}`; root.add(focus);
   switch (motif) {
+    case 'home': {
+      enamelWheel(focus, 2.7);
+      const flower = enamelLotus(focus, 12); flower.scale.setScalar(.55); flower.position.z = .2;
+      break;
+    }
     case 'about': {
-      kundli(focus, 1.7);
-      const backing = kundli(focus, 1.7); backing.position.set(.22, .2, -.5); backing.rotation.z = .07;
+      southChart(focus, 1.95);
+      const backing = southChart(focus, 1.95); backing.position.set(.22, .2, -.5); backing.rotation.z = .07;
       nakshatra(focus); chartLights(focus, 5);
       break;
     }
@@ -214,8 +312,8 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
     }
     case 'how-it-works':
     case 'preparation': {
-      for (let i = 0; i < 3; i++) {
-        const layer = kundli(focus, 1.65); layer.position.set(i * .17, i * .12, -i * .45);
+      for (let i = 0; i < (motif === 'preparation' ? 2 : 3); i++) {
+        const layer = kundli(focus, motif === 'preparation' ? 1.85 : 1.65); layer.position.set(i * .17, i * .12, -i * .45);
         layer.userData.assemble = { phase: i * 1.4, base: -i * .45 };
       }
       const lagna = dot(focus, 0, 1.05, .09, pale, .2); pulse(lagna, 0, .4);
@@ -240,7 +338,7 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
     }
     case 'contact': {
       // A stylised brass horizon instrument with two intersecting planes.
-      const face = dial(focus, 2.25, false); face.rotation.x = -.55;
+      const face = enamelWheel(focus, 2.25); face.rotation.x = -.55;
       for (const [x, y] of [[1.1, 0], [0, 1.1], [.7, .8]]) {
         const hoop = ring(focus, 2.7, .035); hoop.rotation.set(x, y, 0);
       }
@@ -253,7 +351,7 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
     }
     case 'book': {
       const instrument = new THREE.Group(); focus.add(instrument); instrument.rotation.set(-.6, .15, -.15);
-      dial(instrument, 2.4, false); ring(instrument, 1.75, .02); ticks(instrument, 1.7, 60, 5);
+      enamelWheel(instrument, 2.4); ring(instrument, 1.75, .02); ticks(instrument, 1.7, 60, 5);
       const shape = new THREE.Shape(); shape.moveTo(-.8, 0); shape.lineTo(.8, 0); shape.lineTo(.15, 1.75); shape.closePath();
       const gnomon = mesh(instrument, new THREE.ExtrudeGeometry(shape, { depth: .12, bevelEnabled: true, bevelSize: .025, bevelThickness: .025, bevelSegments: 2 }), brass, [0, 0, .12]);
       gnomon.rotation.x = Math.PI / 2;
@@ -282,14 +380,10 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
       focus.rotation.z = -.08; break;
     }
     case 'faq': {
-      const ecliptic = ring(focus, 2.5, .025); ecliptic.name = 'Ecliptic';
-      const orbit = new THREE.Group(); focus.add(orbit); orbit.rotation.x = .8; ring(orbit, 2.5, .025, 0, blue);
-      for (const x of [-2.5, 2.5]) { const node = ring(focus, .14, .035, .1); node.position.x = x; pulse(node, x, .3); }
-      const path = turning(orbit, .09); moon(path, .23, Math.PI * .75, 0, 2.5);
-      moon(focus, .65, Math.PI * .65); nakshatra(focus, 2.9); break;
+      meditation(focus); nakshatra(focus, 3.1); break;
     }
     case 'privacy': {
-      kundli(focus, 1.45); chartLights(focus, 3);
+      southChart(focus, 1.65); chartLights(focus, 3);
       for (let i = 0; i < 3; i++) {
         const seal = new THREE.Group(); focus.add(seal); seal.position.z = -.3 - i * .23;
         const size = 1.85 + i * .18;
@@ -306,7 +400,7 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
       sun(focus, .22); break;
     }
     case 'readings': {
-      const frame = dial(focus, 2.35, false); frame.rotation.x = -.15 - edition * .08;
+      const frame = enamelWheel(focus, 2.35); frame.rotation.x = -.15 - edition * .08;
       const chart = kundli(focus, 1.2); chart.rotation.z = edition * .12;
       for (let i = 0; i <= edition; i++) {
         const orbit = ring(focus, 2.55 + i * .09, .012, -.12 - i * .1); orbit.rotation.y = i * .18;
@@ -316,6 +410,7 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
       break;
     }
     case 'spiritual': {
+      const padma = enamelLotus(focus, 8 + edition * 2); padma.scale.setScalar(.85); padma.position.z = -.35;
       yantra(focus, 3 + edition);
       const band = nakshatra(focus, 2.95); band.rotation.x = edition * .07;
       for (let i = 0; i <= edition; i++) {
@@ -339,7 +434,7 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
     case 'wellbeing':
     case 'calm': {
       const petals = motif === 'calm' ? 16 : 8 + edition * 4;
-      const flower = lotus(focus, petals, 2.2); pulse(flower, 0, .025);
+      const flower = motif === 'calm' ? meditation(focus) : enamelLotus(focus, petals); pulse(flower, 0, .025);
       const chandra = moon(focus, .5 + edition * .15, Math.PI * .7); chandra.userData.phaseCycle = true;
       const halo = nakshatra(focus, 2.8); halo.rotation.x = motif === 'calm' ? .65 : .25;
       for (let i = 0; i < 2 + edition; i++) ring(focus, 2.4 + i * .16, .008, -.2 - i * .12);
@@ -347,8 +442,8 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
     }
     default: kundli(focus);
   }
-  // Sparse stars and partial engraved arcs fill the viewport, rather than making
-  // a single hero ornament. Use seeded positions so posters match the live scene.
+  // Sparse stars fill the viewport without unrelated edge decorations.
+  // Use seeded positions so posters match the live scene.
   const dustPositions: number[] = [];
   for (let i = 0; i < 100; i++) {
     const rand = (n: number) => { const x = Math.sin(n * 127.1 + seed * 311.7) * 43758.5453; return x - Math.floor(x); };
@@ -356,8 +451,6 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
   }
   const dustGeometry = new THREE.BufferGeometry(); dustGeometry.setAttribute('position', new THREE.Float32BufferAttribute(dustPositions, 3));
   const dust = new THREE.Points(dustGeometry, new THREE.PointsMaterial({ color: '#dec698', size: .022, transparent: true, opacity: .65, depthWrite: false })); root.add(dust);
-  const edge = lotus(root, 12, 2.4); edge.position.set(-4.3, -2.5, -1.2); edge.rotation.x = .6; edge.scale.setScalar(.8);
-  const upper = nakshatra(root, 1.4); upper.position.set(3.7, 3, -1); upper.rotation.x = .7;
   root.userData.motif = motif;
   root.userData.edition = edition;
   root.rotation.set(.07, -.10, 0);
@@ -370,6 +463,7 @@ export function animatePageArt(group: THREE.Group, elapsed: number) {
   // whole chart tumbling into an unreadable angle.
   group.rotation.y = -.10 + Math.sin(elapsed * .12) * .045;
   group.traverse(object => {
+    if (object.userData.float) object.position.y = Math.sin(elapsed * .4) * .09;
     if (object.userData.motion === 'rotate') object.rotation.z = elapsed * object.userData.speed;
     if (object.userData.pulse) {
       const { phase, amount } = object.userData.pulse;

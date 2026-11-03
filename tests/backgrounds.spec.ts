@@ -6,7 +6,7 @@ test.setTimeout(180_000);
 
 test('every route has its own complete fallback and no canvas under reduced motion', async ({ page }) => {
  await page.emulateMedia({ reducedMotion: 'reduce' });
- for (const route of sceneRoutes) {
+ for (const route of ['/', ...sceneRoutes]) {
   await page.goto(route, { waitUntil: 'domcontentloaded' });
   await expect(page.locator('.shared-cosmos')).toHaveAttribute('data-scene', pageScene(route).id);
   const poster = page.locator('.cosmos-poster img');
@@ -55,4 +55,20 @@ test('unsupported WebGL retains readable, complete artwork', async ({ page }) =>
  await expect(page.locator('.cosmos-poster')).toBeVisible();
  await page.getByLabel('Your name').fill('Asha');
  await expect(page.getByLabel('Your name')).toHaveValue('Asha');
+});
+
+
+test('portrait artwork fills the screen and stays fixed while scrolling', async ({ page }) => {
+ await page.setViewportSize({ width: 390, height: 844 });
+ await page.emulateMedia({ reducedMotion: 'reduce' });
+ for (const route of ['/', '/about', '/faq']) {
+  await page.goto(route, { waitUntil: 'domcontentloaded' });
+  const background = page.locator('.shared-cosmos');
+  const image = background.locator('.cosmos-poster img');
+  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0 && (element.currentSrc.endsWith('-mobile.webp') || element.currentSrc.includes('jyotisha-poster.svg')))).toBe(true);
+  expect(await background.boundingBox()).toEqual({ x: 0, y: 0, width: 390, height: 844 });
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  expect(await background.boundingBox()).toEqual({ x: 0, y: 0, width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+ }
 });

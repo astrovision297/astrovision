@@ -1,7 +1,7 @@
 'use client';
 
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { Suspense, useRef } from 'react';
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
+import { Suspense, useEffect, useRef } from 'react';
 import { TextureLoader, type Group } from 'three';
 import { grahas, lunarNodes } from '@/data/jyotisha';
 
@@ -54,8 +54,19 @@ function JyotishaChakra({ onReady }: { onReady: () => void }) {
   </group>;
 }
 
-export default function VedicScene({ onReady }: { onReady: () => void }) {
+function ContextGuard({ onError }: { onError: () => void }) {
+  const { gl } = useThree();
+  useEffect(() => {
+    const lost = (event: Event) => { event.preventDefault(); onError(); };
+    gl.domElement.addEventListener('webglcontextlost', lost);
+    return () => gl.domElement.removeEventListener('webglcontextlost', lost);
+  }, [gl, onError]);
+  return null;
+}
+
+export default function VedicScene({ onReady, onError }: { onReady: () => void; onError: () => void }) {
   return <Canvas dpr={[1,1.25]} camera={{position:[0,0,10.2],fov:45}} gl={{alpha:true,antialias:true,powerPreference:'low-power'}} aria-hidden="true">
+    <ContextGuard onError={onError}/>
     <ambientLight intensity={1.8}/><directionalLight position={[0,1,7]} intensity={3}/><directionalLight position={[-4,2,5]} intensity={.8} color="#ffe3a3"/>
     <Suspense fallback={null}><JyotishaChakra onReady={onReady}/></Suspense>
   </Canvas>;

@@ -54,8 +54,8 @@ export default function Celestial() {
  useEffect(()=>{if(!active)setReady(null);},[active]);
  return <><div className="shared-cosmos" aria-hidden="true" data-theme={theme} data-scene={sceneKey} data-variant={variant} data-active={active} data-live={active&&ready===sceneKey}>
   <div className="star-field"/>
-  <div className="cosmos-poster"><Image src={config.poster} alt="" fill sizes="(max-width: 760px) 180vw, 110vw" className="jyotisha-poster" unoptimized={theme!=='home'}/></div>
-  {active&&<Boundary key={sceneKey} onError={onError}>{theme==='home'?<LivingScene onReady={onReady}/>:<div className="living-scene"><PageScene config={config} onReady={onReady} onError={onError}/></div>}</Boundary>}
+  <div className="cosmos-poster">{theme === 'home' ? <Image src={config.poster} alt="" fill sizes="(max-width: 760px) 180vw, 110vw" className="jyotisha-poster" loading="eager"/> : <picture><source media="(max-width: 760px)" srcSet={config.poster.replace('.webp', '-mobile.webp')}/><Image src={config.poster} alt="" fill sizes="100vw" className="jyotisha-poster" loading="eager" unoptimized/></picture>}</div>
+  {active&&<Boundary key={sceneKey} onError={onError}>{theme === 'home' ? <LivingScene onReady={onReady} onError={onError}/> : <div className="living-scene"><PageScene config={config} onReady={onReady} onError={onError}/></div>}</Boundary>}
   <div className="cosmos-shade"/>
  </div><button className="motion-toggle" type="button" aria-pressed={paused} onClick={()=>setPaused(value=>!value)}>
   <span aria-hidden="true">{paused?'▶':'Ⅱ'}</span>{t(paused?'Resume animation':'Pause animation')}

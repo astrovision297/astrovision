@@ -37,3 +37,13 @@ With a local server running, `npx tsx scripts/create-page-art.ts` captures match
 Run `npm test`, `npm run build`, and then `npm run typecheck`. With a server running, run `npx playwright test tests/navigation.spec.ts tests/enquiry.spec.ts tests/revision.spec.ts tests/backgrounds.spec.ts --browser=firefox`. Set `PLAYWRIGHT_BASE_URL` to use another port. The revision suite checks all main routes at desktop/mobile widths, axe accessibility/contrast, removed-service URLs, image loading, all language switches, persistence, input preservation and failed-language-download recovery. On Windows-mounted WSL workspaces, `WATCHPACK_POLLING=true npm run dev -- --webpack` reliably detects file changes.
 
 The repository contains the application source and runtime assets. Original reference photos, design briefs, internal working notes and local environment files are excluded. Hosting has not been configured.
+
+## QA release checks
+
+Run `npm run lint`, `npm test`, `npm run build`, then `npm run typecheck`. For deployment use `npm run build:release`: it requires a real HTTPS `NEXT_PUBLIC_SITE_URL` and prevents releasing an empty sitemap by accident. A configured sitemap contains all 39 page URLs and robots.txt references it. Local builds may omit the deployment origin.
+
+Enquiry controls stay disabled until their local handler is ready. Without JavaScript, visitors see an explanation and can use the contact links. Phone numbers need 7–15 digits; scheduling uses a valid time zone such as Europe/Nicosia. Time-only preferences are retained and dated preferences must still be in the future in the selected zone.
+
+The lint command uses ESLint 10 with the Next.js recommended and Core Web Vitals rules and the TypeScript parser. The minimatch override retains the patched 11.x release for lint dependencies (GHSA-g3hv-75wg-m249).
+
+For the focused QA regression suite against a running server, use `PLAYWRIGHT_BASE_URL=http://localhost:3002 npx playwright test --config=playwright.qa.config.ts tests/qa-fixes.spec.ts tests/enquiry.spec.ts tests/navigation.spec.ts`. Set `QA_BROWSER=firefox` to use Firefox; the default is installed Playwright Chromium. See `QA_FIXES.md` for the completed handoff and testing evidence.

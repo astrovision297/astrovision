@@ -169,3 +169,51 @@ body:has(.shared-cosmos:not([data-theme=home])) :is(.page-hero h1,.page-hero p){
  .shared-cosmos[data-theme]:not([data-theme=home]) .jyotisha-poster{object-fit:cover;transform:translateX(-7.76dvh) scale(.76)}
  body:has(.shared-cosmos:not([data-theme=home])) .page-hero{min-height:340px}
 }
+
+/* Reference-inspired 3D compositions fill the viewport on inner pages. */
+.cosmos-poster picture{position:absolute;inset:0;display:block}
+.shared-cosmos[data-theme][data-scene]:not([data-theme=home]){height:100dvh;background:radial-gradient(ellipse at 72% 48%,#27405a66,transparent 72%),#0b1b3a}
+.shared-cosmos[data-theme][data-scene]:not([data-theme=home])>.living-scene,.shared-cosmos[data-theme][data-scene]:not([data-theme=home])>.cosmos-poster{position:absolute;inset:0;width:100%;height:100%;opacity:.74}
+.shared-cosmos[data-theme][data-scene]:not([data-theme=home]) .jyotisha-poster{object-fit:cover;object-position:68% center;transform:none}
+.shared-cosmos[data-theme][data-scene]:not([data-theme=home]) .cosmos-shade{background:linear-gradient(90deg,#0b1b3a99, #0b1b3a33 48%,transparent 85%)}
+body:has(.shared-cosmos:not([data-theme=home])) .process-section{background:#0e204080}
+body:has(.shared-cosmos:not([data-theme=home])) .horoscope-section{background:#0b1b3a55}
+body:has(.shared-cosmos:not([data-theme=home])) .footer{background:#08162cbb}
+@media(max-width:760px){
+ .shared-cosmos[data-theme][data-scene]:not([data-theme=home])>.living-scene,.shared-cosmos[data-theme][data-scene]:not([data-theme=home])>.cosmos-poster{opacity:.5}
+ .shared-cosmos[data-theme][data-scene]:not([data-theme=home]) .cosmos-shade{background:linear-gradient(90deg,#0b1b3a66,#0b1b3a22)}
+ /* Portrait posters preserve the same fitted artwork as the mobile canvas. */
+ .shared-cosmos[data-theme][data-scene]:not([data-theme=home]) .jyotisha-poster{object-fit:cover;object-position:center;transform:none}
+}
+
+/* QA: controlled disclosure and dependable reading surfaces on inner routes. */
+.nav-more>div[hidden]{display:none}
+.nav-more>div:not([hidden]){display:grid;gap:12px}
+@media(min-width:761px) and (max-width:1000px){
+ .site-header nav>a:nth-last-of-type(2){display:block}
+ .site-header .nav-more{display:block}
+}
+fieldset.form-grid{border:0;padding:0;margin:0;min-width:0}
+.field-error{display:block;color:#ffd5c9;font-size:12px;line-height:1.5}
+[aria-invalid=true]{border-color:#ffd5c9}
+.form-submit:disabled{opacity:.65;cursor:wait}
+body:has(.shared-cosmos:not([data-theme=home])) main>.section,
+body:has(.shared-cosmos:not([data-theme=home])) main>.cta{background:#0b1b3af5}
+body:has(.shared-cosmos:not([data-theme=home])) .page-hero{background:linear-gradient(90deg,#0b1b3af5 0%,#0b1b3af5 58%,#0b1b3a33 100%)}
+/* Poster captures are 2000×1000 desktop and 760×1600 portrait. Fit their
+   focal artwork with the same min(width, height) rule as the WebGL camera. */
+.shared-cosmos[data-theme][data-scene]:not([data-theme=home]) .jyotisha-poster{
+ width:min(172vw,200dvh)!important;height:min(86vw,100dvh)!important;
+ max-width:none;inset:auto!important;top:50%!important;
+ left:calc(68vw - min(172vw,200dvh) * .68)!important;
+ transform:translateY(-50%);object-fit:fill;object-position:center;
+}
+@media(max-width:760px){
+ .shared-cosmos[data-theme][data-scene]:not([data-theme=home]) .jyotisha-poster{
+  width:min(100vw,79.0698dvh)!important;height:min(210.5263vw,166.4627dvh)!important;
+  left:50%!important;transform:translate(-50%,-50%);
+ }
+ body:has(.shared-cosmos:not([data-theme=home])) .page-hero{background:#0b1b3af5}
+}
+
+body:has(.shared-cosmos:not([data-theme=home])) .page-hero :is(h1,p,.breadcrumbs){background:#0b1b3af5;width:fit-content}

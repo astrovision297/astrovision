@@ -1,6 +1,7 @@
 'use client';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
+import { Group } from 'three';
 import { createPageArt, disposePageArt, animatePageArt } from '@/lib/page-art';
 import type { PageSceneConfig } from '@/lib/page-themes';
 
@@ -9,15 +10,28 @@ function Sculpture({ config, onReady }: { config: PageSceneConfig; onReady: () =
   const model = useMemo(() => createPageArt(theme, { motif, edition, seed }), [id, motif, edition, seed, theme]);
   const rendered = useRef(false);
   const elapsed = useRef(0);
-  const { size } = useThree();
+  const { viewport, size } = useThree();
+  const composition = useRef<Group>(null);
+  const scroll = useRef(0);
+  useEffect(() => {
+    const update = () => { scroll.current = window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight); };
+    update(); window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, []);
   useEffect(() => () => disposePageArt(model), [model]);
   useFrame((_, delta) => {
     elapsed.current += Math.min(delta, .05);
     animatePageArt(model, elapsed.current);
+    if (composition.current) {
+      const target = scroll.current * .22;
+      composition.current.rotation.z += (target - composition.current.rotation.z) * Math.min(1, delta * 2);
+      composition.current.position.y = Math.sin(elapsed.current * .16) * .12;
+    }
     if (!rendered.current) { rendered.current = true; onReady(); }
   });
-  // Fit a full composition on narrow screens without increasing the pixel budget.
-  return <group position={[size.width <= 760 ? .55 : 1.65, 0, 0]} scale={size.width <= 760 ? .76 : 1}><primitive object={model}/></group>;
+  // Fit the focal artwork on phones; the surrounding star volume fills the viewport.
+  const scale = Math.min(viewport.width / (size.width <= 760 ? 6.8 : 10), viewport.height / 8.6);
+  return <group ref={composition} position={[size.width <= 760 ? 0 : viewport.width * .18, 0, 0]} scale={scale}><primitive object={model}/></group>;
 }
 function ContextGuard({ onError }: { onError: () => void }) {
   const { gl } = useThree();

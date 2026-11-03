@@ -4,6 +4,7 @@ test.use({ baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000', 
 
 test('a search entered on arrival is retained while URL category synchronization mounts', async ({ page }) => {
   await page.goto('/services');
+  await expect(page.locator('html')).toHaveAttribute('data-motion-paused', 'true');
   await page.getByRole('searchbox').fill('Palm');
   await expect(page.getByRole('searchbox')).toHaveValue('Palm');
   await expect(page.locator('.service-card')).toHaveCount(1);

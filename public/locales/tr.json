@@ -615,5 +615,12 @@
   "you set the pace.": "Sen hızını ayarlarsın.",
   "zodiac-wheel small": "zojin-wheel küçük",
   "· 3 MIN READ": "· 3 DAKİKALIK OKUMA",
-  "“A little clarity can change how you see the path ahead.”": "“Küçük bir açıklık, yolu nasıl gördüğünüzü değiştirebilir.”"
+  "“A little clarity can change how you see the path ahead.”": "“Küçük bir açıklık, yolu nasıl gördüğünüzü değiştirebilir.”",
+  "Enter your name, using more than spaces.": "Adınızı girin; yalnızca boşluk kullanmayın.",
+  "Enter a phone number with country code and 7–15 digits.": "Ülke koduyla birlikte 7–15 rakamlı bir telefon numarası girin.",
+  "Enter a valid time zone, such as Europe/Nicosia.": "Europe/Nicosia gibi geçerli bir saat dilimi girin.",
+  "Enter your birth city and country, using more than spaces.": "Doğduğunuz şehri ve ülkeyi girin; yalnızca boşluk kullanmayın.",
+  "Choose today or a future date in your time zone.": "Saat diliminizde bugünü veya gelecekteki bir tarihi seçin.",
+  "Choose a time that is still ahead in your time zone.": "Saat diliminizde henüz geçmemiş bir saat seçin.",
+  "Enable JavaScript to prepare your enquiry, or contact AstroVision using the contact links.": "Talebinizi hazırlamak için JavaScript’i etkinleştirin veya iletişim bağlantılarıyla AstroVision’a ulaşın."
 }

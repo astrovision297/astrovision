@@ -12,6 +12,7 @@ export default function ThreeScene() {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
   const [rendered, setRendered] = useState(false);
+  const onError = useCallback(() => { setRendered(false); setActive(false); }, []);
   const onReady = useCallback(() => setRendered(true), []);
   useEffect(() => {
     const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
@@ -26,5 +27,5 @@ export default function ThreeScene() {
     motion.addEventListener('change', update); document.addEventListener('visibilitychange', update);
     return () => { observer.disconnect(); motion.removeEventListener('change', update); document.removeEventListener('visibilitychange', update); };
   }, []);
-  return <div className="cosmic-background" data-theme="jyotisha" ref={ref} aria-hidden="true"><div className="cosmic-stars"/><div className="cosmic-wheel" data-rendered={rendered && active}><Image src="/images/jyotisha-poster.svg" alt="" fill sizes="800px" className="sphere-poster" />{active && <div className="canvas-layer"><SceneBoundary><VedicScene onReady={onReady} /></SceneBoundary></div>}</div></div>;
+  return <div className="cosmic-background" data-theme="jyotisha" ref={ref} aria-hidden="true"><div className="cosmic-stars"/><div className="cosmic-wheel" data-rendered={rendered && active}><Image src="/images/jyotisha-poster.svg" alt="" fill sizes="800px" className="sphere-poster" />{active && <div className="canvas-layer"><SceneBoundary><VedicScene onReady={onReady} onError={onError} /></SceneBoundary></div>}</div></div>;
 }

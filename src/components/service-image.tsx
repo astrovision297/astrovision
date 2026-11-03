@@ -13,6 +13,6 @@ export default function ServiceImage({ slug, alt = '', priority = false }: { slu
   const asset = imagery.find(image => image.slug === slug);
   if (!asset) return null;
   return <div className="service-image" data-service-image={slug}>
-    <Image src={asset.src} alt={alt} fill sizes="(max-width: 760px) 88vw, (max-width: 1100px) 44vw, 32vw" priority={priority}/>
+    <Image src={asset.src} alt={alt} fill sizes="(max-width: 760px) 88vw, (max-width: 1100px) 44vw, 32vw" loading={priority?"eager":"lazy"}/>
   </div>;
 }

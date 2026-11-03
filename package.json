@@ -7,7 +7,10 @@
     "build": "next build --webpack",
     "start": "next start --hostname 0.0.0.0",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/*.test.ts"
+    "test": "tsx --test tests/*.test.ts",
+    "lint": "eslint src",
+    "check:release": "tsx scripts/check-release.ts",
+    "build:release": "npm run check:release && npm run build"
   },
   "dependencies": {
     "@react-three/drei": "^10.0.0",
@@ -23,15 +26,21 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
+    "@next/eslint-plugin-next": "^16.4.3",
     "@playwright/test": "^1.56.0",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@types/three": "^0.180.0",
+    "@typescript-eslint/parser": "^8.72.1",
+    "eslint": "^10.14.0",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.0.0",
     "tsx": "^4.20.0",
     "typescript": "^5.9.0"
+  },
+  "overrides": {
+    "minimatch": "^11.0.1"
   }
 }

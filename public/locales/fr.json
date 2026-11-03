@@ -615,5 +615,12 @@
   "you set the pace.": "Tu as mis le rythme.",
   "zodiac-wheel small": "zodiaque-roue petite",
   "· 3 MIN READ": "· 3 MIN DE LECTURE",
-  "“A little clarity can change how you see the path ahead.”": "Un peu de clarté peut changer la façon dont vous voyez la voie à suivre."
+  "“A little clarity can change how you see the path ahead.”": "Un peu de clarté peut changer la façon dont vous voyez la voie à suivre.",
+  "Enter your name, using more than spaces.": "Saisissez votre nom, pas seulement des espaces.",
+  "Enter a phone number with country code and 7–15 digits.": "Saisissez un numéro avec indicatif pays et 7 à 15 chiffres.",
+  "Enter a valid time zone, such as Europe/Nicosia.": "Saisissez un fuseau horaire valide, comme Europe/Nicosia.",
+  "Enter your birth city and country, using more than spaces.": "Saisissez votre ville et pays de naissance, pas seulement des espaces.",
+  "Choose today or a future date in your time zone.": "Choisissez aujourd’hui ou une date future dans votre fuseau horaire.",
+  "Choose a time that is still ahead in your time zone.": "Choisissez une heure à venir dans votre fuseau horaire.",
+  "Enable JavaScript to prepare your enquiry, or contact AstroVision using the contact links.": "Activez JavaScript pour préparer votre demande, ou utilisez les liens de contact AstroVision."
 }
