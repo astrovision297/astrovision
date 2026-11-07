@@ -29,7 +29,7 @@ for (const width of [390, 1440]) {
 
 test('removed service is absent from catalogue, booking and old detail URL', async ({ page }) => {
  await page.goto('/services');
- await expect(page.locator('.service-card')).toHaveCount(24);
+ await expect(page.locator('.service-card')).toHaveCount(30);
  await page.getByRole('searchbox').fill('Hanuman');
  await expect(page.locator('.service-card')).toHaveCount(0);
  await page.goto('/book');
@@ -95,14 +95,14 @@ test('language download failure keeps the current language and offers retry', as
  await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
 });
 
-test('each service has its own photograph, shared with its detail page', async ({ page }) => {
+test('each service has its own illustration, shared with its detail page', async ({ page }) => {
  await page.goto('/services');
  const photographs = page.locator('.service-card .service-image');
- await expect(photographs).toHaveCount(24);
+ await expect(photographs).toHaveCount(30);
  const subjects = await photographs.evaluateAll(images => images.map(image => image.getAttribute('data-service-image')));
- expect(new Set(subjects).size).toBe(24);
+ expect(new Set(subjects).size).toBe(30);
  const sources = await page.locator('.service-card .service-image img').evaluateAll(images => images.map(image => image.getAttribute('src')));
- expect(new Set(sources).size).toBe(24);
+ expect(new Set(sources).size).toBe(30);
  await expect(page.locator('.service-card .service-art')).toHaveCount(0);
  await page.goto('/services/palm-reading');
  await expect(page.locator('.service-detail-image [data-service-image=palm-reading] img')).toBeVisible();

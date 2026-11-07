@@ -22,7 +22,7 @@ const entries = [
  ['business-guidance','career','Business Guidance','Consider your business questions through a traditional astrological lens.'],
  ['career-guidance','career','Career Guidance','Explore your strengths, changing priorities, and professional direction.'],
  ['money-finance-guidance','career','Money & Finance Guidance','Reflect on financial habits and priorities alongside qualified financial advice.'],
- ['family-disputes','love','Family Dispute Guidance','Reflect on family tensions, communication, and boundaries with a thoughtful outside perspective.'],
+ ['family-disputes','love','Family Problem Solutions','Reflect on family tensions, communication, and boundaries with a thoughtful outside perspective.'],
  ['separation-divorce','love','Separation & Divorce Guidance','A space to reflect on relationship changes, your choices, and the next chapter. Not legal advice.'],
  ['property-disputes','career','Property Dispute Guidance','Discuss property concerns through a traditional perspective alongside independent legal and financial advice.'],
  ['face-reading','readings','Face Reading','Explore traditional facial symbolism as a starting point for self-reflection, not a judgment of character.'],
@@ -30,9 +30,18 @@ const entries = [
  ['job-guidance','career','Job Guidance','Reflect on workplace challenges, a job search, and the decisions within your control.'],
  ['future-predictions','readings','Future Perspectives','Explore traditional views of life cycles and possibilities without promises or certain predictions.'],
  ['depression-spiritual-support','wellbeing','Depression — Spiritual Support','Optional spiritual reflection alongside professional mental health care. This service does not diagnose or treat depression.'],
+ ['health-medical-astrology','wellbeing','Health and Medical Astrology','Explore traditional birth-chart perspectives on wellbeing alongside qualified medical care. This consultation does not diagnose or treat illness.'],
+ ['numerology-consultation','readings','Numerology Consultation','Explore the traditional symbolism of numbers associated with your name and birth date.'],
+ ['tarot-guidance-divination','readings','Tarot Guidance and Divination','Use tarot symbolism to reflect on your questions, choices, and possibilities.'],
+ ['vastu-shastri-consultation','readings','Vastu Shastri Consultation','Explore traditional Vastu principles for balance and harmony in your home or workspace.'],
+ ['childrens-astrology','wellbeing','Children’s Astrology','A thoughtful birth-chart consultation for parents exploring their child’s interests, strengths, and needs.'],
+ ['foreign-settlement-travel-guidance','career','Foreign Settlement and Travel Guidance','Explore relocation and travel questions through a traditional astrological perspective alongside practical planning.'],
 ];
 // Names transcribed from the supplied specialist list; descriptive titles avoid promises of outcomes.
 const referenceNames: Record<string, string> = {
+ 'health-medical-astrology': 'Health and Medical Astrology', 'numerology-consultation': 'Numerology Consultation',
+ 'tarot-guidance-divination': 'Tarot Guidance and Divination', 'vastu-shastri-consultation': 'Vastu Shastri Consultation',
+ 'childrens-astrology': 'Children’s Astrology', 'foreign-settlement-travel-guidance': 'Foreign Settlement and Travel Guidance',
  'relationship-reconciliation': 'Get Your Love Back', 'family-disputes': 'Family Disputes',
  'separation-divorce': 'Separation / Divorce', 'bad-luck-remedies': 'Bad Luck Removal',
  'property-disputes': 'End Property Disputes', 'horoscope-matching': 'Horoscope Matching',
@@ -54,7 +63,7 @@ export const process = [
 ];
 export const questions = [
  ['Understanding astrology','How can astrology help me?','Astrology offers a traditional framework for reflecting on personality, timing, and life patterns. You can use it as one perspective when considering your next step.'],
- ['Understanding astrology','Are outcomes guaranteed?','No. Astrology is belief-based guidance, not a guarantee of future events. Your decisions and circumstances shape your life.'],
+ ['Understanding astrology','Are outcomes guaranteed?','Vedic Astrology is a profound science. With accurate birth details, the readings are remarkably precise and insightful'],
  ['Your consultation','Can I discuss love and relationship concerns?','Yes. Consultations can explore compatibility, communication, commitment, and relationship changes, while respecting the choices of everyone involved.'],
  ['Your consultation','Can I discuss spiritual concerns?','Yes. Spiritual readings and traditional cleansing practices offer a space for reflection. No consultation establishes that you are cursed or under a supernatural influence.'],
  ['Booking','How do I book a consultation?','Choose Book Appointment, add your preferences, and send your enquiry. Your appointment is confirmed only when AstroVision replies and agrees the details with you.'],

@@ -30,15 +30,15 @@ test('canonical origin is normalized and invalid deployment URLs are rejected',(
   for(const url of ['ftp://example.com','https://example.com/path','https://a:b@example.com','https://example.com/?secret=yes']) assert.throws(()=>siteOrigin(url));
 });
 
-test('configured metadata publishes all 39 canonical pages and its sitemap reference', async()=>{
+test('configured metadata publishes all 45 canonical pages and its sitemap reference', async()=>{
   const {default:sitemap}=await import('../src/app/sitemap');
   const {default:robots}=await import('../src/app/robots');
   const previous=process.env.NEXT_PUBLIC_SITE_URL;
   try {
     process.env.NEXT_PUBLIC_SITE_URL='https://qa.example.com/';
     const urls=sitemap().map(entry=>entry.url);
-    assert.equal(urls.length,39);
-    assert.equal(new Set(urls).size,39);
+    assert.equal(urls.length,45);
+    assert.equal(new Set(urls).size,45);
     assert.ok(urls.every(url=>url.startsWith('https://qa.example.com')));
     assert.equal(robots().sitemap,'https://qa.example.com/sitemap.xml');
   } finally {

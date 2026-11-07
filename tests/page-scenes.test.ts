@@ -8,7 +8,7 @@ import * as THREE from 'three';
 
 test('every supported page has a unique scene and an existing fallback', () => {
   const configs = ['/', ...sceneRoutes].map(pageScene);
-  assert.equal(configs.length, 39);
+  assert.equal(configs.length, 45);
   assert.equal(new Set(configs.map(config => config.id)).size, configs.length);
   assert.equal(new Set(configs.map(config => config.poster)).size, configs.length);
   for (const config of configs) {
