@@ -1,7 +1,7 @@
 // Extract display copy for the checked-in dictionaries. No runtime translation service.
 const ts = require('typescript');
 const fs = require('fs');
-const paths=['src/components/home.tsx','src/components/client-revisions.tsx','src/data/countries.ts','src/components/celestial.tsx','src/components/language-provider.tsx','src/app/error.tsx','src/app/not-found.tsx','src/data/content.ts','src/data/site.ts'];
+const paths=['src/components/video-reviews.tsx','src/components/home.tsx','src/components/client-revisions.tsx','src/data/countries.ts','src/components/celestial.tsx','src/components/language-provider.tsx','src/app/error.tsx','src/app/not-found.tsx','src/data/content.ts','src/data/site.ts'];
 const texts=new Set();
 for(const path of paths){
  const tree=ts.createSourceFile(path,fs.readFileSync(path,'utf8'),ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);

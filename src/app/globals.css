@@ -246,3 +246,14 @@ body:has(.shared-cosmos:not([data-theme=home])) .page-hero :is(h1,p,.breadcrumbs
  .hero-copy>.hero-note{order:6;justify-content:center;margin-top:6px}
  .ganesha-caption{bottom:-14px;font-size:7px;letter-spacing:1.4px}
 }
+
+.video-reviews{margin-top:64px;padding-top:48px;border-top:1px solid var(--line)}
+.video-reviews>h2{margin-bottom:28px}
+.video-review-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.video-review-card{margin:0;min-width:0;border:1px solid var(--line);background:var(--panel);overflow:hidden}
+.video-review-card video{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:contain;background:#050b15}
+.video-review-card figcaption{padding:18px 20px}
+.video-review-card h3{font-size:24px;margin-bottom:12px;overflow-wrap:anywhere}
+.video-review-card .text-link{font-size:12px}
+@media(max-width:1000px){.video-review-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.video-reviews{margin-top:40px;padding-top:32px}.video-review-grid{grid-template-columns:1fr;gap:20px}}

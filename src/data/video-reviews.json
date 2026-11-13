@@ -1,0 +1,27 @@
+[
+  {
+    "src": "/videos/reviews/review-1.mp4",
+    "width": 480,
+    "height": 854
+  },
+  {
+    "src": "/videos/reviews/review-2.mp4",
+    "width": 480,
+    "height": 854
+  },
+  {
+    "src": "/videos/reviews/review-3.mp4",
+    "width": 464,
+    "height": 816
+  },
+  {
+    "src": "/videos/reviews/review-4.mp4",
+    "width": 576,
+    "height": 480
+  },
+  {
+    "src": "/videos/reviews/review-5.mp4",
+    "width": 464,
+    "height": 832
+  }
+]
