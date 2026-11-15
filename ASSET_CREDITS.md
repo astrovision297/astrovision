@@ -21,3 +21,13 @@ The 24 service images in `public/images/services/` are original AI-generated edi
 Original generated PNGs are retained under `/home/sai_sharaan/.codex/generated_images/01a17cb8-e89a-7df2-81d1-9e6fad2a3edb/`. Their local optimised WebP deliverables are the runtime assets. They illustrate service themes; they do not depict identified AstroVision staff, actual client sessions or documented outcomes.
 
 The non-home backgrounds were subsequently replaced after client feedback. Their original astrology diagrams and new fallback files use `*-astrology.webp` names. See [astrology visual research](ASTROLOGY_VISUAL_RESEARCH.md) for the concept of each page, source references and animation choices. The home background remains unchanged.
+
+## Spiritual background audio
+
+`public/audio/om-meditation.mp3` is a 32-second local arrangement using Tito Dutta's **Om.ogg** voice recording (14 April 2012), available under **CC0 1.0**:
+- Recording and license: https://commons.wikimedia.org/wiki/File:Om.ogg
+- License: https://creativecommons.org/publicdomain/zero/1.0/
+
+The voice was slowed to 65% tempo, filtered, faded, given a gentle echo, and repeated over an original synthesized C/G drone and sparse C/D/E melody. The mix fades at both ends for a quiet repeating transition. Encoded as stereo 44.1 kHz MP3 at 128 kbps. The original synthesized accompaniment was prepared for this website; no third-party music samples were used.
+
+The initially proposed Pixabay track, Celestial Mantra Drift by RibhavAgrawal, is **not included**: its download required access unavailable to this environment. The CC0 recording replaces that dependency.

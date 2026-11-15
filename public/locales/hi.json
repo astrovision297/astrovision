@@ -758,5 +758,9 @@
   "Online consultation from": "यहाँ से ऑनलाइन परामर्श:",
   "Video Reviews": "वीडियो समीक्षाएँ",
   "Video review": "वीडियो समीक्षा",
-  "Open video": "वीडियो खोलें"
+  "Open video": "वीडियो खोलें",
+  "Play music": "संगीत चलाएँ",
+  "Pause music": "संगीत रोकें",
+  "Music volume": "संगीत की आवाज़",
+  "Music unavailable. Tap play to retry.": "संगीत उपलब्ध नहीं है। फिर से प्रयास करने के लिए चलाएँ दबाएँ।"
 }

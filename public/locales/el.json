@@ -758,5 +758,9 @@
   "Online consultation from": "Διαδικτυακή συνεδρία από",
   "Video Reviews": "Κριτικές σε βίντεο",
   "Video review": "Κριτική σε βίντεο",
-  "Open video": "Άνοιγμα βίντεο"
+  "Open video": "Άνοιγμα βίντεο",
+  "Play music": "Αναπαραγωγή μουσικής",
+  "Pause music": "Παύση μουσικής",
+  "Music volume": "Ένταση μουσικής",
+  "Music unavailable. Tap play to retry.": "Η μουσική δεν είναι διαθέσιμη. Πατήστε αναπαραγωγή για νέα προσπάθεια."
 }

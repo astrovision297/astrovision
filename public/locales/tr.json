@@ -758,5 +758,9 @@
   "Online consultation from": "Çevrimiçi danışmanlık konumu:",
   "Video Reviews": "Video Yorumları",
   "Video review": "Video yorumu",
-  "Open video": "Videoyu aç"
+  "Open video": "Videoyu aç",
+  "Play music": "Müziği çal",
+  "Pause music": "Müziği duraklat",
+  "Music volume": "Müzik sesi",
+  "Music unavailable. Tap play to retry.": "Müzik kullanılamıyor. Tekrar denemek için oynat düğmesine dokunun."
 }
