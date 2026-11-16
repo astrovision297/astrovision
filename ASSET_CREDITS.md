@@ -16,7 +16,7 @@ The explanation of Jyotisha as the Indian astrological tradition concerned with 
 
 # Service-specific image revision
 
-The 24 service images in `public/images/services/` are original AI-generated editorial illustrations created with the built-in imagegen tool for this project. Each file corresponds to a different service, with the subject and complete scene brief recorded in `src/data/service-imagery.json`. The common production prompt requests a single photorealistic editorial image, a landscape composition, natural ivory/linen/navy/brass materials, natural light, no text, no logos and no fear-based claims. The full prompt is that shared style plus the individual service title and subject in the manifest.
+The 30 service images in `public/images/services/` are original AI-generated editorial illustrations created with the built-in imagegen tool for this project. Each file corresponds to a different service, with the subject and complete scene brief recorded in `src/data/service-imagery.json`. The common production prompt requests a single photorealistic editorial image, a landscape composition, natural ivory/linen/navy/brass materials, natural light, no text, no logos and no fear-based claims. The full prompt is that shared style plus the individual service title and subject in the manifest.
 
 Original generated PNGs are retained under `/home/sai_sharaan/.codex/generated_images/01a17cb8-e89a-7df2-81d1-9e6fad2a3edb/`. Their local optimised WebP deliverables are the runtime assets. They illustrate service themes; they do not depict identified AstroVision staff, actual client sessions or documented outcomes.
 
@@ -24,14 +24,10 @@ The non-home backgrounds were subsequently replaced after client feedback. Their
 
 ## Spiritual background audio
 
-The active background track is `public/audio/client-background-music.mp3`, an unchanged copy of the client-supplied `audio/WhatsApp Audio 2026-11-16 at 10.14.51 AM.mpeg`, provided on 16 November 2026. The player loops this track with the existing playback and volume controls.
+The active track is `public/audio/background-music-a774483e122d.mp3`, optimized from the client-supplied `audio/WhatsApp Audio 2026-11-16 at 10.14.51 AM.mpeg` provided on 16 November 2026. The full recording is retained, encoded as stereo 44.1 kHz MP3 at 96 kbps for background playback. The original client file remains in the local reference folder. The filename includes the first 12 characters of its SHA-256 hash so the browser can cache the recording safely.
 
-The previous track is retained as an unused asset:
+The superseded Om arrangement and its runtime file have been removed.
 
-`public/audio/om-meditation.mp3` is a 32-second local arrangement using Tito Dutta's **Om.ogg** voice recording (14 April 2012), available under **CC0 1.0**:
-- Recording and license: https://commons.wikimedia.org/wiki/File:Om.ogg
-- License: https://creativecommons.org/publicdomain/zero/1.0/
+## Review video thumbnails
 
-The voice was slowed to 65% tempo, filtered, faded, given a gentle echo, and repeated over an original synthesized C/G drone and sparse C/D/E melody. The mix fades at both ends for a quiet repeating transition. Encoded as stereo 44.1 kHz MP3 at 128 kbps. The original synthesized accompaniment was prepared for this website; no third-party music samples were used.
-
-The initially proposed Pixabay track, Celestial Mantra Drift by RibhavAgrawal, is **not included**: its download required access unavailable to this environment. The CC0 recording replaces that dependency.
+`public/videos/reviews/review-1.webp` through `review-5.webp` are thumbnails extracted from the corresponding client-supplied review videos at one second, resized to 480 pixels wide and encoded as WebP. The video players show these images without downloading the clips until playback.

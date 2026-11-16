@@ -25,23 +25,6 @@ body{isolation:isolate}
 .category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .process-section{background:#0e2040d9}
 .review-card,.service-card{background:#102343eb}
-.service-art{position:relative;width:100%;aspect-ratio:1;display:grid;place-items:center;color:var(--champagne);isolation:isolate}
-.service-art:before,.service-art:after{content:'';position:absolute;inset:7%;border:1px solid #d4af3738;border-radius:50%}
-.service-art:after{inset:20%;border-style:dashed;opacity:.6}
-.service-art>svg{width:40%;height:40%;stroke-width:1.1;filter:drop-shadow(0 4px 12px #d4af3733);transform-origin:center}
-.service-orbit{position:absolute;inset:2%;border:1px solid #d4af371a;border-radius:50%;animation:wheel-turn 24s linear infinite}
-.service-orbit>span{position:absolute;top:12%;left:12%;width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px #d4af3766}
-.art-index{position:absolute;bottom:4%;right:0;font-family:var(--font-heading),Georgia,serif;font-size:17px;color:#d4af3780}
-.service-constellation{position:absolute;top:12%;right:7%;color:var(--gold);font-size:20px;animation:icon-twinkle 5s ease-in-out infinite}
-.service-art.together>svg{animation:icon-heart 4.5s ease-in-out infinite}
-.service-art.growth>svg{animation:icon-float 5s ease-in-out infinite}
-.service-art.lotus>svg{animation:icon-twinkle 5s ease-in-out infinite}
-.service-art.rings>svg{animation:icon-compass 12s ease-in-out infinite}
-.service-art.protection>svg{animation:icon-shield 6s ease-in-out infinite}
-.service-art.devotion>svg{animation:icon-flame 4s ease-in-out infinite}
-.service-art[data-visible=false],.service-art[data-visible=false] *{animation-play-state:paused!important}
-.service-visual>.service-art{width:170px;height:170px}
-.aside-art>.service-art{width:160px;margin:auto}
 .specialist-section{border-top:1px solid var(--line)}
 .specialist-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 30px}
 .specialist-grid>a{display:flex;align-items:center;gap:13px;padding:20px 0;border-bottom:1px solid var(--line);min-width:0}
@@ -53,17 +36,11 @@ body{isolation:isolate}
 .specialist-grid>a:hover>svg{transform:translate(2px,-2px)}
 .specialist-grid>a:hover strong{color:var(--champagne)}
 .review-stars{display:flex;gap:3px;color:var(--gold);margin-bottom:18px}
-@keyframes icon-heart{0%,100%{transform:scale(1)}45%{transform:scale(1.1)}60%{transform:scale(1.03)}75%{transform:scale(1.08)}}
-@keyframes icon-float{0%,100%{transform:translateY(3px) rotate(-3deg)}50%{transform:translateY(-7px) rotate(3deg)}}
-@keyframes icon-twinkle{0%,100%{opacity:.55;transform:scale(.95)}50%{opacity:1;transform:scale(1.08)}}
-@keyframes icon-compass{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(35deg)}}
-@keyframes icon-shield{0%,100%{transform:perspective(250px) rotateY(-22deg)}50%{transform:perspective(250px) rotateY(22deg)}}
-@keyframes icon-flame{0%,100%{transform:rotate(-5deg) scaleY(.95)}50%{transform:rotate(5deg) scaleY(1.08)}}
 :root[data-motion-paused=true] *,:root[data-motion-paused=true] *:before,:root[data-motion-paused=true] *:after{animation-play-state:paused!important}
 @media(max-width:1000px){.category-grid,.specialist-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.shared-cosmos>.living-scene{width:180vw;right:-65%;opacity:.35}.cosmos-poster{width:180vw;right:-65%;top:0;opacity:.2}.hero-orbit-space{display:none}.motion-toggle{bottom:calc(72px + env(safe-area-inset-bottom));left:10px;font-size:9px;padding:6px 9px;min-height:32px}.specialist-grid{gap:0 20px}.specialist-grid>a{gap:9px}.specialist-grid strong{font-size:11px}.specialist-grid small{font-size:9px}.specialist-star{font-size:20px}.specialist-grid>a>svg{width:13px}}
 @media(max-width:400px){.specialist-grid{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:reduce){.motion-toggle{display:none}.cosmos-poster>.zodiac-wheel,.service-art *{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.motion-toggle{display:none}.cosmos-poster>.zodiac-wheel{animation:none!important}}
 .brand img{animation:brand-breathe 8s ease-in-out infinite}
 @keyframes brand-breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.035)}}
 @media(prefers-reduced-motion:reduce){.brand img{animation:none!important}}
@@ -122,7 +99,6 @@ html[lang=hi] h1,html[lang=hi] h2,html[lang=hi] h3{line-height:1.5;letter-spacin
 @media(max-width:380px){.site-header .brand{font-size:21px}.site-header .brand img{width:30px;height:30px}.site-header .brand small{font-size:4px}.language-select select{max-width:72px}.site-header{padding-inline:4%;gap:7px}.hero-photo{height:310px}}
 .button.whatsapp{background:#164c3b;color:#d8ffe8}
 .button.whatsapp:hover{background:#1b624a;color:#fff}
-.art-index{color:#d8c28c}
 @media(max-width:760px){.hero{background:linear-gradient(#0b1b3ad9,#0b1b3a55),var(--navy)}}
 html[lang=hi] body,html[lang=hi] h1,html[lang=hi] h2,html[lang=hi] h3,html[lang=hi] blockquote{font-family:var(--font-hindi),sans-serif}
 .language-select select,.language-select option[lang=hi]{font-family:var(--font-body),var(--font-hindi),sans-serif}
@@ -251,7 +227,10 @@ body:has(.shared-cosmos:not([data-theme=home])) .page-hero :is(h1,p,.breadcrumbs
 .video-reviews>h2{margin-bottom:28px}
 .video-review-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
 .video-review-card{margin:0;min-width:0;border:1px solid var(--line);background:var(--panel);overflow:hidden}
-.video-review-card video{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:contain;background:#050b15}
+.video-review-card video{display:block;width:100%;height:auto;object-fit:contain;background:#050b15}
+.video-player{position:relative}
+.video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:8px;min-width:100px;min-height:90px;padding:16px;border:1px solid var(--champagne);border-radius:12px;background:#0b1b3af5;color:var(--champagne);font-size:12px;box-shadow:0 4px 20px #0005}
+.video-play:hover{background:#164c3b;color:#fff}
 .video-review-card figcaption{padding:18px 20px}
 .video-review-card h3{font-size:24px;margin-bottom:12px;overflow-wrap:anywhere}
 .video-review-card .text-link{font-size:12px}

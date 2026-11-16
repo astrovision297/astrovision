@@ -78,7 +78,7 @@ for (const locale of ['el', 'fr', 'nl', 'tr', 'hi']) {
   await expect(page.locator('html')).toHaveAttribute('lang', locale);
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.getByRole('button', { expanded: false }).filter({ has: page.locator('svg') }).first().click();
+  await page.locator('button[aria-controls="main-nav"]').click();
   await expect(page.locator('#main-nav')).toBeVisible();
   expect(errors).toEqual([]);
  });

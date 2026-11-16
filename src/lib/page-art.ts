@@ -111,10 +111,6 @@ export function createPageArt(theme: ArtTheme, options?: { motif: SceneMotif; ed
     if (houses) ring(chart, .48, .008);
     return chart;
   }
-  function aspect(parent: THREE.Group, a: number, b: number, radius: number, material: THREE.Material = blue) {
-    const p = (angle: number) => [Math.cos(angle) * radius, Math.sin(angle) * radius, .09];
-    segment(parent, p(a), p(b), material, .007); dot(parent, p(a)[0], p(a)[1], .04, material); dot(parent, p(b)[0], p(b)[1], .04, material);
-  }
   function sun(parent: THREE.Group, radius = .3) {
     const group = new THREE.Group(); group.name = 'Surya-Sun'; parent.add(group);
     dot(group, 0, 0, radius, new THREE.MeshBasicMaterial({ color: '#edc47b' })); ring(group, radius * 1.3, .012, .13);

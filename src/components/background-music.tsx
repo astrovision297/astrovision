@@ -29,7 +29,7 @@ export default function BackgroundMusic() {
     const attempt = ++generation.current;
     started.current = true;
     player.volume = volumeRef.current;
-    if (!player.getAttribute('src')) player.src = '/audio/client-background-music.mp3';
+    if (!player.getAttribute('src')) player.src = '/audio/background-music-a774483e122d.mp3';
     try {
       await player.play();
       if (attempt === generation.current) setError(false);
@@ -50,7 +50,7 @@ export default function BackgroundMusic() {
     } catch { /* Keep the gentle default. */ }
     const firstInteraction = (event: Event) => {
       if (event instanceof KeyboardEvent && !['Enter', ' '].includes(event.key)) return;
-      if (event.target instanceof Element && event.target.closest('.background-music, video')) return;
+      if (event.target instanceof Element && event.target.closest('.background-music, video, .video-player')) return;
       document.removeEventListener('click', firstInteraction);
       document.removeEventListener('keydown', firstInteraction);
       void start();

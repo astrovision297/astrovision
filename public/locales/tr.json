@@ -762,5 +762,6 @@
   "Play music": "Müziği çal",
   "Pause music": "Müziği duraklat",
   "Music volume": "Müzik sesi",
-  "Music unavailable. Tap play to retry.": "Müzik kullanılamıyor. Tekrar denemek için oynat düğmesine dokunun."
+  "Music unavailable. Tap play to retry.": "Müzik kullanılamıyor. Tekrar denemek için oynat düğmesine dokunun.",
+  "Play video": "Videoyu oynat"
 }

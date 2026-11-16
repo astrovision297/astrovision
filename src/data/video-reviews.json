@@ -2,26 +2,31 @@
   {
     "src": "/videos/reviews/review-1.mp4",
     "width": 480,
-    "height": 854
+    "height": 854,
+    "poster": "/videos/reviews/review-1.webp"
   },
   {
     "src": "/videos/reviews/review-2.mp4",
     "width": 480,
-    "height": 854
+    "height": 854,
+    "poster": "/videos/reviews/review-2.webp"
   },
   {
     "src": "/videos/reviews/review-3.mp4",
     "width": 464,
-    "height": 816
+    "height": 816,
+    "poster": "/videos/reviews/review-3.webp"
   },
   {
     "src": "/videos/reviews/review-4.mp4",
     "width": 576,
-    "height": 480
+    "height": 480,
+    "poster": "/videos/reviews/review-4.webp"
   },
   {
     "src": "/videos/reviews/review-5.mp4",
     "width": 464,
-    "height": 832
+    "height": 832,
+    "poster": "/videos/reviews/review-5.webp"
   }
 ]
