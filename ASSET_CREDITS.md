@@ -24,6 +24,10 @@ The non-home backgrounds were subsequently replaced after client feedback. Their
 
 ## Spiritual background audio
 
+The active background track is `public/audio/client-background-music.mp3`, an unchanged copy of the client-supplied `audio/WhatsApp Audio 2026-11-16 at 10.14.51 AM.mpeg`, provided on 16 November 2026. The player loops this track with the existing playback and volume controls.
+
+The previous track is retained as an unused asset:
+
 `public/audio/om-meditation.mp3` is a 32-second local arrangement using Tito Dutta's **Om.ogg** voice recording (14 April 2012), available under **CC0 1.0**:
 - Recording and license: https://commons.wikimedia.org/wiki/File:Om.ogg
 - License: https://creativecommons.org/publicdomain/zero/1.0/

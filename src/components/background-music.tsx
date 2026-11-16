@@ -29,7 +29,7 @@ export default function BackgroundMusic() {
     const attempt = ++generation.current;
     started.current = true;
     player.volume = volumeRef.current;
-    if (!player.getAttribute('src')) player.src = '/audio/om-meditation.mp3';
+    if (!player.getAttribute('src')) player.src = '/audio/client-background-music.mp3';
     try {
       await player.play();
       if (attempt === generation.current) setError(false);

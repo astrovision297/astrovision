@@ -18,7 +18,7 @@ test.beforeEach(async ({ page }) => {
     };
   });
   // The media lifecycle is mocked; avoid a download during control tests.
-  await page.route('**/audio/om-meditation.mp3', route => route.fulfill({ path: 'public/audio/om-meditation.mp3', contentType: 'audio/mpeg' }));
+  await page.route('**/audio/client-background-music.mp3', route => route.fulfill({ path: 'public/audio/client-background-music.mp3', contentType: 'audio/mpeg' }));
 });
 
 test('starts on interaction, preserves pause and volume on reload', async ({ page }) => {
