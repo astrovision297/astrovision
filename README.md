@@ -20,9 +20,9 @@ Hanuman Puja has been removed as requested, leaving 30 services across five cate
 
 ## Contact configuration
 
-Copy `.env.example` to `.env.local` and fill in the available public business details. WhatsApp defaults to +357 96111659; `NEXT_PUBLIC_WHATSAPP_NUMBER` can override it using international digits only, without `+`, or an empty value can disable it. Phone, email, opening hours and Facebook appear when configured. `NEXT_PUBLIC_SITE_URL` supplies the production origin for sitemap and robots output; rebuild after changing public environment variables.
+Copy `.env.example` to `.env.local` and fill in the available public business details. WhatsApp defaults to +357 96111659; `NEXT_PUBLIC_WHATSAPP_NUMBER` can override it using international digits only, without `+`, and a blank value keeps the default number. Phone, email, opening hours and Facebook appear when configured. `NEXT_PUBLIC_SITE_URL` supplies the production origin for sitemap and robots output; rebuild after changing public environment variables.
 
-Forms prepare an editable enquiry locally. Visitors can open WhatsApp with their prepared enquiry or copy it and continue on Instagram. Both contact options appear throughout the website when WhatsApp is configured. No enquiry is stored in a website database, and no appointment is confirmed automatically. Scheduling, payments and WhatsApp Business auto-replies are not integrated.
+Forms prepare an editable enquiry locally. Visitors open WhatsApp with their prepared enquiry, with a copy-message option also available. General contact areas offer both WhatsApp and Instagram. No enquiry is stored in a website database, and no appointment is confirmed automatically. Scheduling, payments and WhatsApp Business auto-replies are not integrated.
 
 ## Animation and assets
 
