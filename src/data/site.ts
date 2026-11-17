@@ -2,7 +2,7 @@ export const site = {
   name: 'Astro Vision',
   maps: 'https://maps.app.goo.gl/rj2mQdtfo7izqfCD8',
   instagram: 'https://www.instagram.com/a_s_t_r_o_vision/',
-  astrologer: '', whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '', phone: process.env.NEXT_PUBLIC_PHONE_NUMBER ?? '', email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '', hours: process.env.NEXT_PUBLIC_OPENING_HOURS ?? '', facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://www.facebook.com/share/1DoTsR1PZE/?mibextid=wwXIfr', location: 'Ledras 154-154, Nicosia 1011, Cyprus',
+  astrologer: '', whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '35796111659', phone: process.env.NEXT_PUBLIC_PHONE_NUMBER ?? '', email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '', hours: process.env.NEXT_PUBLIC_OPENING_HOURS ?? '', facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://www.facebook.com/share/1DoTsR1PZE/?mibextid=wwXIfr', location: 'Ledras 154-154, Nicosia 1011, Cyprus',
   stats: [{ value: '100+', label: 'Happy clients' }, { value: '20+', label: 'Years of experience' }],
   disclaimer: 'Astrology and spiritual guidance are offered for reflection and support. They are not a substitute for medical, legal, financial or psychological advice.',
 };
