@@ -86,6 +86,18 @@ option{background:#102340;color:#f3f1ea}
 .language-select{display:flex;align-items:center;gap:6px;color:#f0d99c;padding:6px 8px;border:1px solid #e8d08a66;border-radius:4px;background:#102340}
 .language-select select{border:0;background:transparent;color:#f3f1ea;font-size:11px;max-width:108px;min-height:30px;padding:0 3px;cursor:pointer}
 .language-error{position:absolute;top:100%;right:0;width:220px;padding:12px;background:#102340;border:1px solid #e8d08a;color:#fff;z-index:60;font-size:12px}
+.contact-options{display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0}
+.contact-options>a{display:inline-flex;align-items:center;gap:7px}
+.header-actions .contact-options,.social-row .contact-options{flex-wrap:nowrap}
+.header-chat>svg:last-child,.footer-chat>svg:last-child,.top-contact>svg:last-child{display:none}
+.booking-aside>.contact-options{display:flex;flex-direction:column;align-items:stretch;margin-bottom:10px}
+.service-card-actions{flex-wrap:wrap}
+.contact-links{flex-wrap:wrap}
+.contact-options{display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0}
+.contact-options>a{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.header-chat>svg:last-child,.footer-chat>svg:last-child,.top-contact>svg:last-child{display:none}
+.floating .button.outline{background:var(--panel);color:var(--champagne);border-color:var(--line)}
+@media(max-width:760px){.mobile-contact>.contact-options{flex:2;flex-wrap:nowrap;gap:8px}.mobile-contact .contact-options>.button{padding:8px 10px}.header-actions .contact-options{gap:8px}}
 .header-actions{gap:10px}
 .shared-cosmos[data-theme]:not([data-theme=home])>.living-scene,.shared-cosmos[data-theme]:not([data-theme=home])>.cosmos-poster{right:-20%;width:85vw;opacity:.65}
 .shared-cosmos[data-theme]:not([data-theme=home]) .jyotisha-poster{transform:scale(1)}
@@ -245,3 +257,5 @@ body:has(.shared-cosmos[data-theme=home]) .specialist-grid small{color:#c4ccdb}
 body:has(.shared-cosmos[data-theme=home]) .about-section .lead{color:#e0e5ee}
 
 .background-music{position:fixed;bottom:68px;left:70px;z-index:46;display:flex;align-items:center;flex-wrap:wrap;max-width:270px;border:1px solid var(--line);border-radius:6px;background:#0b1b3af5;color:var(--champagne);box-shadow:0 4px 20px #0003;font-size:11px}.background-music button{display:flex;align-items:center;justify-content:center;gap:7px;min-height:44px;min-width:44px;padding:8px 10px;background:transparent;border:0;border-radius:5px}.background-music button:hover{background:#d4af3715}.background-music label{display:flex;align-items:center;gap:8px;flex:1 0 100%;padding:8px 10px;border-top:1px solid var(--line)}.background-music input[type=range]{width:85px;min-height:28px;padding:0;accent-color:var(--gold)}.music-error{flex:1 0 100%;padding:4px 10px 9px;font-size:10px;max-width:250px}@media(max-width:760px){.background-music{left:10px;bottom:calc(114px + env(safe-area-inset-bottom));max-width:250px}}
+
+.country-contact{min-width:0}.country-contact .country-card{height:auto}.country-instagram{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;font-size:11px;color:var(--champagne)}

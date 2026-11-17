@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
-import { ArrowUpRight, Globe2, Heart, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Globe2, Heart, Instagram, ShieldCheck, Sparkles } from 'lucide-react';
 import { countries, filterCountries, regions } from '@/data/countries';
 import { facebookLinks, site } from '@/data/site';
 import { whatsappUrl } from '@/lib/whatsapp';
@@ -73,7 +73,7 @@ export function WorldwideConsultations() {
         const service = `Online consultation from ${country.name}`;
         const url = whatsappUrl(site.whatsapp, `Hello AstroVision, I would like to arrange an online consultation from ${country.name}. Please help me find a suitable time.`);
         const content = <><span className="country-code" aria-hidden="true">{country.code}</span><span><strong>{displayName(country.code)}</strong><small>Online consultation</small></span><ArrowUpRight size={16}/></>;
-        return url ? <a className="country-card" key={country.code} href={url} target="_blank" rel="noopener noreferrer">{content}</a> : <Link className="country-card" key={country.code} href={`/contact?service=${encodeURIComponent(service)}`}>{content}</Link>;
+        return <div className="country-contact" key={country.code}>{url ? <a className="country-card" href={url} target="_blank" rel="noopener noreferrer">{content}<span className="sr-only">WhatsApp</span></a> : <Link className="country-card" href={`/contact?service=${encodeURIComponent(service)}`}>{content}</Link>}<a className="country-instagram" href={site.instagram} target="_blank" rel="noopener noreferrer"><Instagram size={14}/> Instagram <ArrowUpRight size={14}/></a></div>;
       })}</div></div>;
     })}
     {!shown.length && <div className="empty-state"><h3>No matching countries</h3><p>Try another country or region.</p><button type="button" className="button outline" onClick={() => { setQuery(''); setRegion('all'); }}>Show all countries</button></div>}
