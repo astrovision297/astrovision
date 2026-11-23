@@ -26,3 +26,30 @@ test('footer category navigation updates the existing service list and clears it
   await page.goBack();
   await expect(page.locator('.service-card')).toHaveCount(careerCount);
 });
+
+test('mobile navigation and media controls stay clear of booking on a short phone', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 480 });
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  await expect(page.locator('html')).toHaveAttribute('data-motion-paused', 'true');
+  await expect(page.locator('.shared-cosmos canvas')).toHaveCount(0);
+
+  const contact = page.locator('.mobile-contact');
+  const menu = page.getByRole('button', { name: 'Open menu' });
+  const media = page.getByRole('button', { name: 'Media settings' });
+  await menu.click();
+  await expect(page.locator('#main-nav')).toBeVisible();
+  await media.click();
+  await expect(page.locator('#main-nav')).toBeHidden();
+  await page.getByRole('button', { name: 'Music volume' }).click();
+  await expect(page.getByRole('slider', { name: 'Music volume' })).toBeInViewport();
+  await page.keyboard.press('Escape');
+  await expect(media).toBeFocused();
+  await expect(media).toHaveAttribute('aria-expanded', 'false');
+
+  await expect(contact.getByRole('link', { name: 'WhatsApp' })).toHaveAttribute('href', /wa\.me/);
+  await expect(contact.getByRole('link', { name: 'Instagram' })).toHaveAttribute('href', /instagram\.com/);
+  await contact.getByRole('link', { name: 'Book Appointment' }).click();
+  await expect(page).toHaveURL(/\/book$/);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320);
+});

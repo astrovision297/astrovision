@@ -20,7 +20,7 @@ export function GaneshaHero() {
   const { t } = useLanguage();
   return <div className="ganesha-hero">
     <div className="ganesha-halo" aria-hidden="true"/>
-    <Image src="/images/ganesha-hero.webp" alt={t('Lord Ganesha seated on a lotus, surrounded by a golden celestial halo')} fill sizes="(max-width: 760px) 88vw, 44vw" preload/>
+    <Image src="/images/ganesha-hero.webp" alt={t('Lord Ganesha seated on a lotus, surrounded by a golden celestial halo')} fill sizes="(max-width: 426px) 71vw, (max-width: 760px) 300px, (max-width: 1300px) 44vw, 570px" preload/>
     <svg viewBox="0 0 600 600" className="ganesha-zodiac" aria-hidden="true">
       <g fill="none" stroke="currentColor">{[265, 280, 288].map(r => <circle key={r} cx="300" cy="300" r={r}/>)}
         {Array.from({ length: 72 }, (_, i) => <path key={i} d={`M300 12v${i % 6 === 0 ? 15 : 5}`} transform={`rotate(${i * 5} 300 300)`}/>)}</g>
@@ -73,7 +73,7 @@ export function WorldwideConsultations() {
         const service = `Online consultation from ${country.name}`;
         const url = whatsappUrl(site.whatsapp, `Hello AstroVision, I would like to arrange an online consultation from ${country.name}. Please help me find a suitable time.`);
         const content = <><span className="country-code" aria-hidden="true">{country.code}</span><span><strong>{displayName(country.code)}</strong><small>Online consultation</small></span><ArrowUpRight size={16}/></>;
-        return <div className="country-contact" key={country.code}>{url ? <a className="country-card" href={url} target="_blank" rel="noopener noreferrer">{content}<span className="sr-only">WhatsApp</span></a> : <Link className="country-card" href={`/contact?service=${encodeURIComponent(service)}`}>{content}</Link>}<a className="country-instagram" href={site.instagram} target="_blank" rel="noopener noreferrer"><Instagram size={14}/> Instagram <ArrowUpRight size={14}/></a></div>;
+        return <div className="country-contact" key={country.code}>{url ? <a className="country-card" href={url} target="_blank" rel="noopener noreferrer">{content}<span className="sr-only">WhatsApp</span></a> : <Link className="country-card" prefetch={false} href={`/contact?service=${encodeURIComponent(service)}`}>{content}</Link>}<a className="country-instagram" href={site.instagram} target="_blank" rel="noopener noreferrer"><Instagram size={14}/> Instagram <ArrowUpRight size={14}/></a></div>;
       })}</div></div>;
     })}
     {!shown.length && <div className="empty-state"><h3>No matching countries</h3><p>Try another country or region.</p><button type="button" className="button outline" onClick={() => { setQuery(''); setRegion('all'); }}>Show all countries</button></div>}

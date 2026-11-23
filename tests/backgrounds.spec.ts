@@ -26,6 +26,7 @@ test('live scenes animate, pause, survive navigation and recover to a poster on 
  const before = await canvas.screenshot();
  await page.waitForTimeout(700);
  expect((await canvas.screenshot()).equals(before)).toBe(false);
+ await page.getByRole('button', { name: 'Media settings' }).click();
  await page.getByRole('button', { name: 'Pause animation' }).click();
  await expect(background.locator('canvas')).toHaveCount(0);
  await expect(page.locator('.cosmos-poster')).toBeVisible();
@@ -33,6 +34,7 @@ test('live scenes animate, pause, survive navigation and recover to a poster on 
  await expect(page).toHaveURL(/\/services$/, { timeout: 30_000 });
  await expect(background).toHaveAttribute('data-scene', 'services', { timeout: 30_000 });
  await expect(background.locator('canvas')).toHaveCount(0);
+ await page.getByRole('button', { name: 'Media settings' }).click();
  await page.getByRole('button', { name: 'Resume animation' }).click();
  await expect(background).toHaveAttribute('data-live', 'true', { timeout: 60_000 });
  await background.locator('canvas').evaluate((element: HTMLCanvasElement) => element.dispatchEvent(new Event('webglcontextlost', { cancelable: true })));

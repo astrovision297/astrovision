@@ -50,7 +50,7 @@ export default function BackgroundMusic() {
     } catch { /* Keep the gentle default. */ }
     const firstInteraction = (event: Event) => {
       if (event instanceof KeyboardEvent && !['Enter', ' '].includes(event.key)) return;
-      if (event.target instanceof Element && event.target.closest('.background-music, video, .video-player')) return;
+      if (event.target instanceof Element && event.target.closest('.media-settings, [aria-controls="media-settings"], video, .video-player')) return;
       document.removeEventListener('click', firstInteraction);
       document.removeEventListener('keydown', firstInteraction);
       void start();
@@ -84,13 +84,13 @@ export default function BackgroundMusic() {
       else { desired.current = true; if (audio.current?.error) audio.current.load(); void start(); }
       persist();
     }}><Music2 size={15} aria-hidden="true"/>{playing ? <Pause size={14} aria-hidden="true"/> : <Play size={14} aria-hidden="true"/>}<span>{t(playing ? 'Pause music' : 'Play music')}</span></button>
-    <button type="button" aria-label={t('Music volume')} aria-expanded={expanded} aria-controls="music-volume" onClick={() => setExpanded(!expanded)}><Volume2 size={16} aria-hidden="true"/></button>
-    {expanded && <label id="music-volume">{t('Music volume')}<input aria-label={t('Music volume')} type="range" min="0" max="100" value={Math.round(volume * 100)} onChange={event => {
+    <button type="button" aria-label={t('Music volume')} aria-expanded={expanded} aria-controls="music-volume" onClick={() => setExpanded(value => !value)}><Volume2 size={16} aria-hidden="true"/></button>
+    <label id="music-volume" hidden={!expanded}>{t('Music volume')}<input aria-label={t('Music volume')} type="range" min="0" max="100" value={Math.round(volume * 100)} onChange={event => {
       volumeRef.current = Number(event.target.value) / 100;
       setVolume(volumeRef.current);
       if (audio.current) audio.current.volume = volumeRef.current;
       persist();
-    }}/><output>{Math.round(volume * 100)}%</output></label>}
+    }}/><output>{Math.round(volume * 100)}%</output></label>
     {error && <span className="music-error" role="status">{t('Music unavailable. Tap play to retry.')}</span>}
   </div>;
 }

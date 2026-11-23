@@ -68,6 +68,7 @@ test('Ganesha hero loads and respects reduced motion and the shared pause contro
   expect(await page.locator('.ganesha-zodiac').evaluate(el => getComputedStyle(el).animationName)).toBe('none');
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await expect(page.locator('html')).toHaveAttribute('data-motion-paused', 'false');
+  await page.getByRole('button', { name: 'Media settings' }).click();
   await page.getByRole('button', { name: 'Pause animation' }).click();
   await expect.poll(() => page.locator('.ganesha-zodiac').evaluate(el => getComputedStyle(el).animationPlayState)).toBe('paused');
   await page.getByRole('button', { name: 'Resume animation' }).click();

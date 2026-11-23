@@ -15,6 +15,10 @@ test('changed details invalidate the prepared message while direct message edits
   await fillEnquiry(page);
   const preview = page.getByRole('textbox', { name: 'Prepared enquiry message' });
   await expect(preview).toHaveValue(/interested in Palm Reading/);
+  await preview.fill('');
+  await expect(preview).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Copy your message' })).toBeDisabled();
+  await expect(page.getByRole('link', { name: 'Open WhatsApp' })).toHaveCount(0);
   await preview.fill('My edited enquiry');
   await expect(preview).toHaveValue('My edited enquiry');
 
@@ -43,6 +47,9 @@ test('service prefills follow URL changes and browser Back without keeping an ol
   await expect(service).toHaveValue('Palm Reading');
   await page.evaluate(() => window.history.pushState(null, '', '/book'));
   await expect(service).toHaveValue('General consultation');
+  await service.selectOption('Palm Reading');
+  await service.selectOption('General consultation');
+  await expect(service).toHaveValue('General consultation');
   await expect(page.getByLabel('Your name')).toHaveValue('Alex');
 });
 
@@ -50,7 +57,6 @@ test('clipboard failure selects the enquiry and explains how to copy it manually
   await page.goto('/book');
   await fillEnquiry(page);
   const copy = page.getByRole('button', { name: 'Copy your message' });
-  test.skip(await copy.count() === 0, 'Copy fallback appears when WhatsApp is not configured.');
   await page.evaluate(() => {
     Object.defineProperty(navigator, 'clipboard', {
       configurable: true,

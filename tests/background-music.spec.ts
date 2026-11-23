@@ -26,6 +26,7 @@ test('starts on interaction, preserves pause and volume on reload', async ({ pag
   const audio = page.locator('.background-music audio');
   await expect(audio).not.toHaveAttribute('src');
   await page.locator('h1').click();
+  await page.getByRole('button', { name: 'Media settings' }).click();
   await expect(page.getByRole('button', { name: 'Pause music', exact: true })).toBeVisible();
   await expect(audio).toHaveJSProperty('volume', 0.15);
   await page.getByRole('button', { name: 'Music volume', exact: true }).click();
@@ -34,6 +35,7 @@ test('starts on interaction, preserves pause and volume on reload', async ({ pag
   await page.getByRole('button', { name: 'Pause music', exact: true }).click();
   await page.reload();
   await page.locator('h1').click();
+  await page.getByRole('button', { name: 'Media settings' }).click();
   await expect(audio).not.toHaveAttribute('src');
   await page.getByRole('button', { name: 'Play music', exact: true }).click();
   await expect(audio).toHaveJSProperty('volume', 0.08);
@@ -43,6 +45,7 @@ test('blocked playback offers an explicit retry', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => sessionStorage.setItem('block-audio', 'true'));
   await page.locator('h1').click();
+  await page.getByRole('button', { name: 'Media settings' }).click();
   await expect(page.getByRole('status').filter({ hasText: 'Music unavailable' })).toBeVisible();
   await page.evaluate(() => sessionStorage.removeItem('block-audio'));
   await page.getByRole('button', { name: 'Play music', exact: true }).click();
@@ -52,6 +55,7 @@ test('blocked playback offers an explicit retry', async ({ page }) => {
 test('testimonial playback suspends music without changing user preference', async ({ page }) => {
   await page.goto('/');
   await page.locator('h1').click();
+  await page.getByRole('button', { name: 'Media settings' }).click();
   await page.evaluate(async () => {
     const video = document.createElement('video');
     video.id = 'music-test-video';
@@ -67,15 +71,18 @@ test('music stays mounted across navigation and controls fit a phone', async ({ 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   await page.locator('h1').click();
+  await page.getByRole('button', { name: 'Media settings' }).click();
   await page.evaluate(() => { document.querySelector('.background-music audio')?.setAttribute('data-player-check', 'original'); });
   await page.locator('.footer a[href="/about"]').first().click();
   await expect(page).toHaveURL(/\/about$/);
   await expect(page.locator('.background-music audio')).toHaveAttribute('data-player-check', 'original');
+  await expect(page.getByRole('button', { name: 'Media settings' })).toHaveAttribute('aria-expanded', 'false');
+  await page.getByRole('button', { name: 'Media settings' }).click();
   await expect(page.getByRole('button', { name: 'Pause music', exact: true })).toBeVisible();
   const music = await page.locator('.background-music').boundingBox();
-  const motion = await page.locator('.motion-toggle').boundingBox();
+  const contact = await page.locator('.mobile-contact').boundingBox();
   expect(music).not.toBeNull();
   expect(music!.x).toBeGreaterThanOrEqual(0);
   expect(music!.x + music!.width).toBeLessThanOrEqual(390);
-  if (motion) expect(music!.y + music!.height).toBeLessThanOrEqual(motion.y);
+  expect(music!.y + music!.height).toBeLessThan(contact!.y);
 });
