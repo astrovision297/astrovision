@@ -1,4 +1,8 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Home from '@/components/home';
-export const metadata: Metadata = {title: 'Privacy Policy', description: 'How AstroVision’s website handles enquiry information and third-party services.'};
+export const metadata = pageMetadata(
+  '/privacy',
+  'Privacy Policy',
+  'How AstroVision’s website handles enquiry information and third-party services.',
+);
 export default function Page() { return <Home page="privacy"/>; }

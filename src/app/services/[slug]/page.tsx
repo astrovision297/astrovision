@@ -1,8 +1,32 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { services } from '@/data/content';
+import imagery from '@/data/service-imagery.json';
+import { DetailBreadcrumbs } from '@/components/detail-breadcrumbs';
 import { ServiceDetail } from '@/components/home';
+import { pageMetadata } from '@/lib/seo';
+
 export const dynamicParams = false;
-export function generateStaticParams(){return services.map(s=>({slug:s.slug}));}
-export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const {slug}=await params;const service=services.find(s=>s.slug===slug);return {title:service?.title||'Service not found',description:service?.description};}
-export default async function Page({params}:{params:Promise<{slug:string}>}){const {slug}=await params;if(!services.some(s=>s.slug===slug))notFound();return <ServiceDetail slug={slug}/>;}
+
+type PageProps = { params: Promise<{ slug: string }> };
+
+export function generateStaticParams() {
+  return services.map(({ slug }) => ({ slug }));
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const service = services.find(service => service.slug === slug);
+  if (!service) notFound();
+
+  const image = imagery.find(asset => asset.slug === slug);
+  return pageMetadata(`/services/${slug}`, `${service.title} in Nicosia`, service.description, image?.src);
+}
+
+export default async function Page({ params }: PageProps) {
+  const { slug } = await params;
+  const service = services.find(service => service.slug === slug);
+  if (!service) notFound();
+
+  return <><DetailBreadcrumbs section="services" title={service.title} /><ServiceDetail slug={slug} /></>;
+}

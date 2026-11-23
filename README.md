@@ -20,7 +20,7 @@ Hanuman Puja has been removed as requested, leaving 30 services across five cate
 
 ## Contact configuration
 
-Copy `.env.example` to `.env.local` and fill in the available public business details. WhatsApp defaults to +357 96111659; `NEXT_PUBLIC_WHATSAPP_NUMBER` can override it using international digits only, without `+`, and a blank value keeps the default number. Phone, email, opening hours and Facebook appear when configured. `NEXT_PUBLIC_SITE_URL` supplies the production origin for sitemap and robots output; rebuild after changing public environment variables.
+Copy `.env.example` to `.env.local` and fill in the available public business details. WhatsApp defaults to +357 96111659; `NEXT_PUBLIC_WHATSAPP_NUMBER` can override it using international digits only, without `+`, and a blank value keeps the default number. Phone, email, opening hours and Facebook appear when configured. Rebuild after changing public environment variables.
 
 Forms prepare an editable enquiry locally. Visitors open WhatsApp with their prepared enquiry, with a copy-message option also available. General contact areas offer both WhatsApp and Instagram. No enquiry is stored in a website database, and no appointment is confirmed automatically. Scheduling, payments and WhatsApp Business auto-replies are not integrated.
 
@@ -40,7 +40,15 @@ The repository contains the application source and runtime assets. Original refe
 
 ## QA release checks
 
-Run `npm run lint`, `npm test`, `npm run build`, then `npm run typecheck`. For deployment use `npm run build:release`: it requires a real HTTPS `NEXT_PUBLIC_SITE_URL` and prevents releasing an empty sitemap by accident. A configured sitemap contains all 45 page URLs and robots.txt references it. Local builds may omit the deployment origin.
+Run `npm run lint`, `npm test`, `npm run build`, then `npm run typecheck`. For deployment use `npm run build:release` to verify that the build has an HTTPS production origin. The sitemap lists all 45 canonical pages and `robots.txt` points to it. Local builds may omit the production origin.
+
+## Search indexing
+
+On Vercel, the build defaults to `VERCEL_PROJECT_PRODUCTION_URL` when system environment variables are exposed. Set `NEXT_PUBLIC_SITE_URL` to the preferred HTTPS origin if the project has multiple domains or runs on another host. Rebuild after changing it. The same origin supplies page canonicals, social cards, structured data and the sitemap. Vercel preview builds include `noindex`.
+
+After publishing, verify the production property in [Google Search Console](https://search.google.com/search-console/about), submit `/sitemap.xml`, and inspect the homepage and main services page. If using HTML tag verification for a URL-prefix property, set `GOOGLE_SITE_VERIFICATION` to the token from the tag and redeploy before verifying. Use the same website URL in the business’s Google Maps listing.
+
+## QA details
 
 Enquiry controls stay disabled until their local handler is ready. Without JavaScript, visitors see an explanation and can use the contact links. Phone numbers need 7–15 digits; scheduling uses a valid time zone such as Europe/Nicosia. Time-only preferences are retained and dated preferences must still be in the future in the selected zone.
 

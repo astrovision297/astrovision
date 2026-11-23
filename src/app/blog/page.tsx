@@ -1,4 +1,8 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Home from '@/components/home';
-export const metadata: Metadata = {title: 'The AstroVision Journal', description: 'Thoughtful notes on astrology, preparing for a reading, and everyday reflection.'};
+export const metadata = pageMetadata(
+  '/blog',
+  'Astrology & Spiritual Guidance Journal',
+  'Explore the AstroVision Journal for articles on moon signs, preparing for a birth-chart reading and everyday spiritual reflection.',
+);
 export default function Page() { return <Home page="blog"/>; }

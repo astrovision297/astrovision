@@ -21,6 +21,15 @@ for(const route of ['/book','/contact','/horoscope']) {
   await form.getByLabel('Preferred time').fill('14:30');
   await form.getByRole('button',{name:'Prepare my enquiry'}).click();
   await expect(form.getByLabel('Prepared enquiry message')).toHaveValue(/Preferred time: 14:30 \(Europe\/Nicosia\)/);
+  const zone = form.getByRole('combobox', { name: 'Time zone' });
+  await expect(zone).toHaveValue('Europe/Nicosia');
+  await zone.selectOption('America/New_York');
+  await expect(form.getByLabel('Prepared enquiry message')).toHaveCount(0);
+  await form.getByRole('button', { name: 'Prepare my enquiry' }).click();
+  const expected = 'Preferred time: 14:30 (America/New_York)';
+  await expect(form.getByLabel('Prepared enquiry message')).toHaveValue(new RegExp('America/New_York'));
+  const whatsapp = await form.getByRole('link', { name: 'Open WhatsApp' }).getAttribute('href');
+  expect(new URL(whatsapp!).searchParams.get('text')).toContain(expected);
  });
  test(`${route}: no-JavaScript fallback prevents submission`,async({browser})=>{
   const context=await browser.newContext({javaScriptEnabled:false});
@@ -35,6 +44,17 @@ for(const route of ['/book','/contact','/horoscope']) {
   await context.close();
  });
 }
+test('the dropdown updates the date picker minimum to the selected zone', async ({ page }) => {
+ await page.clock.setFixedTime(new Date('2026-07-12T21:15:00Z'));
+ await page.setViewportSize({ width: 390, height: 844 });
+ await page.goto('/book');
+ const form = page.locator('.booking-form');
+ const date = form.getByLabel('Preferred date');
+ const zone = form.getByRole('combobox', { name: 'Time zone' });
+ await expect(date).toHaveAttribute('min', '2026-07-13');
+ await zone.selectOption('UTC');
+ await expect(date).toHaveAttribute('min', '2026-07-12');
+});
 test('birthday result survives browsing another sign',async({page})=>{
  await page.goto('/horoscope');
  await expect(page.locator('.booking-form .form-submit')).toBeEnabled();

@@ -1,4 +1,8 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Home from '@/components/home';
-export const metadata: Metadata = {title: 'Frequently Asked Questions', description: 'Answers about readings, booking, privacy, languages, and what to expect.'};
+export const metadata = pageMetadata(
+  '/faq',
+  'Astrology Consultation FAQs',
+  'Find answers about booking an astrology reading, preparing your birth details, privacy and online consultations.',
+);
 export default function Page() { return <Home page="faq"/>; }

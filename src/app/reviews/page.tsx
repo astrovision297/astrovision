@@ -1,4 +1,8 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Home from '@/components/home';
-export const metadata: Metadata = {title: 'Client Experiences', description: 'Read experiences shared by AstroVision clients and visit our Google listing.'};
+export const metadata = pageMetadata(
+  '/reviews',
+  'Astrology Consultation Reviews',
+  'Read and watch client experiences from AstroVision’s astrology consultations. Visit the Nicosia Google Maps listing for current reviews.',
+);
 export default function Page() { return <Home page="reviews"/>; }

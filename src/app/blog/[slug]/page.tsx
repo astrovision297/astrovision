@@ -1,8 +1,30 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { articles } from '@/data/content';
+import { DetailBreadcrumbs } from '@/components/detail-breadcrumbs';
 import { ArticleDetail } from '@/components/home';
+import { pageMetadata } from '@/lib/seo';
+
 export const dynamicParams = false;
-export function generateStaticParams(){return articles.map(a=>({slug:a.slug}));}
-export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const {slug}=await params;const article=articles.find(a=>a.slug===slug);return {title:article?.title||'Article not found',description:article?.intro};}
-export default async function Page({params}:{params:Promise<{slug:string}>}){const {slug}=await params;if(!articles.some(a=>a.slug===slug))notFound();return <ArticleDetail slug={slug}/>;}
+
+type PageProps = { params: Promise<{ slug: string }> };
+
+export function generateStaticParams() {
+  return articles.map(({ slug }) => ({ slug }));
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const article = articles.find(article => article.slug === slug);
+  if (!article) notFound();
+
+  return pageMetadata(`/blog/${slug}`, article.searchTitle, article.searchDescription, article.image);
+}
+
+export default async function Page({ params }: PageProps) {
+  const { slug } = await params;
+  const article = articles.find(article => article.slug === slug);
+  if (!article) notFound();
+
+  return <><DetailBreadcrumbs section="blog" title={article.title} /><ArticleDetail slug={slug} /></>;
+}
